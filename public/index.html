@@ -421,20 +421,12 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 <div class="toast" id="toast">Saved to cloud ☁</div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCAEl3gVe65A1XgSMTcpzBa8j9BSh3TODE",
-  authDomain: "days-dashboard-f52a7.firebaseapp.com",
-  projectId: "days-dashboard-f52a7",
-  storageBucket: "days-dashboard-f52a7.firebasestorage.app",
-  messagingSenderId: "641656369525",
-  appId: "1:641656369525:web:58d5434427e753c258e33c"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const supabase = createClient(
+  'https://ciyzesmktjoszvxjefjw.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpeXplc21rdGpvc3p2eGplZmp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMzMyMzIsImV4cCI6MjA5MTYwOTIzMn0.qlAtnuWcc5uUCmhoOmeGdf6o8oohj3GgJ9oKOFQ8nYQ'
+);
 
 // ═══ CONSTANTS ═══
 const MS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -486,38 +478,68 @@ function syncStaffArrays(){
   if(!ADMINS.includes(anAdminSel))   anAdminSel  = ADMINS[0]||'';
 }
 
-async function loadFromFirebase(){
+async function loadFromSupabase(){
   setSyncStatus('saving','Connecting...');
   try{
     await loadPins();
-    const docRef = doc(db,'dashboard','data');
-    onSnapshot(docRef, snap => {
-      if(snap.exists()){
-        const d = snap.data();
-        STATE.barbers = d.barbers || {};
-        STATE.admins  = d.admins  || {};
-        STATE.staff   = d.staff   || defaultStaff();
-      } else {
-        STATE.staff = defaultStaff();
+
+    // Load staff
+    const {data:staffData} = await supabase.from('staff').select('*');
+    if(staffData && staffData.length>0){
+      STATE.staff = staffData.map(s=>({id:s.id,name:s.name,role:s.role}));
+    } else {
+      STATE.staff = defaultStaff();
+    }
+
+    // Load barber records
+    const {data:barberData} = await supabase.from('barber_records').select('*,staff(name)');
+    STATE.barbers = {};
+    if(barberData){
+      for(const r of barberData){
+        const key=`${MS[r.month-1]}_${r.year}`;
+        if(!STATE.barbers[key]) STATE.barbers[key]={};
+        STATE.barbers[key][r.staff.name]={
+          rank:r.rank, avgBill:r.avg_bill,
+          punctuality:r.punctuality_violations,
+          dresscode:r.dresscode_violations,
+          standards:r.standards_violations,
+          absences:r.absences
+        };
       }
-      syncStaffArrays();
-      setSyncStatus('online','Live · All devices synced');
-      document.getElementById('loading').style.display='none';
-      // Copy logo to PIN overlay
-      const logoSrc = document.querySelector('.logo-img').src;
-      document.getElementById('pin-logo').src = logoSrc;
-      // Check session
-      const saved = sessionStorage.getItem('ed_user');
-      if(saved){
-        try{ loginAs(JSON.parse(saved)); } catch(e){ showPinOverlay(); }
-      } else {
-        showPinOverlay();
+    }
+
+    // Load admin records
+    const {data:adminData} = await supabase.from('admin_records').select('*,staff(name)');
+    STATE.admins = {};
+    if(adminData){
+      for(const r of adminData){
+        const key=`${MS[r.month-1]}_${r.year}`;
+        if(!STATE.admins[key]) STATE.admins[key]={};
+        STATE.admins[key][r.staff.name]={
+          crm:r.crm_violations, schedule:r.schedule_violations,
+          cleaning:r.cleaning_violations, barbers:r.barbers_violations,
+          admin:r.admin_violations, cosmetics:r.cosmetics_sales,
+          absences:r.absences
+        };
       }
-    });
+    }
+
+    syncStaffArrays();
+    setSyncStatus('online','Live · All devices synced');
+    document.getElementById('loading').style.display='none';
+    const logoSrc = document.querySelector('.logo-img').src;
+    document.getElementById('pin-logo').src = logoSrc;
+    const saved = sessionStorage.getItem('ed_user');
+    if(saved){
+      try{ loginAs(JSON.parse(saved)); } catch(e){ showPinOverlay(); }
+    } else {
+      showPinOverlay();
+    }
   } catch(e){
     setSyncStatus('error','Connection error');
     document.getElementById('loading').style.display='none';
     showPinOverlay();
+    console.error(e);
   }
 }
 
@@ -525,19 +547,65 @@ function showPinOverlay(){
   document.getElementById('pin-overlay').style.display='flex';
 }
 
-async function saveToFirebase(){
+async function saveToSupabase(){
   setSyncStatus('saving','Saving...');
   try{
-    await setDoc(doc(db,'dashboard','data'),{
-      barbers:STATE.barbers,
-      admins:STATE.admins,
-      staff:STATE.staff,
-      updatedAt:new Date().toISOString()
-    });
+    // Upsert staff and build name→id map
+    const staffMap = {};
+    for(const s of STATE.staff){
+      const {data} = await supabase.from('staff')
+        .upsert({name:s.name,role:s.role},{onConflict:'name'})
+        .select('id').single();
+      if(data) staffMap[s.name]=data.id;
+    }
+    // Also catch any staff already in DB not in current list
+    const {data:allStaff} = await supabase.from('staff').select('id,name');
+    if(allStaff) allStaff.forEach(s=>{ if(!staffMap[s.name]) staffMap[s.name]=s.id; });
+
+    // Save barber records
+    for(const [key,monthData] of Object.entries(STATE.barbers)){
+      const parts=key.split('_');
+      const month=MS.indexOf(parts[0])+1;
+      const year=parseInt(parts[1]);
+      for(const [name,d] of Object.entries(monthData)){
+        const staffId=staffMap[name];
+        if(!staffId) continue;
+        await supabase.from('barber_records').upsert({
+          staff_id:staffId, month, year,
+          rank:d.rank||'base', avg_bill:d.avgBill||0,
+          punctuality_violations:d.punctuality||0,
+          dresscode_violations:d.dresscode||0,
+          standards_violations:d.standards||0,
+          absences:d.absences||0,
+          updated_at:new Date().toISOString()
+        },{onConflict:'staff_id,month,year'});
+      }
+    }
+
+    // Save admin records
+    for(const [key,monthData] of Object.entries(STATE.admins)){
+      const parts=key.split('_');
+      const month=MS.indexOf(parts[0])+1;
+      const year=parseInt(parts[1]);
+      for(const [name,d] of Object.entries(monthData)){
+        const staffId=staffMap[name];
+        if(!staffId) continue;
+        await supabase.from('admin_records').upsert({
+          staff_id:staffId, month, year,
+          crm_violations:d.crm||0, schedule_violations:d.schedule||0,
+          cleaning_violations:d.cleaning||0, barbers_violations:d.barbers||0,
+          admin_violations:d.admin||0, cosmetics_sales:d.cosmetics||0,
+          absences:d.absences||0,
+          updated_at:new Date().toISOString()
+        },{onConflict:'staff_id,month,year'});
+      }
+    }
+
     setSyncStatus('online','Saved · All devices synced');
     showToast();
   } catch(e){
     setSyncStatus('error','Save failed');
+    console.error(e);
   }
 }
 
@@ -1001,7 +1069,7 @@ window.setRank=setRank;window.stepB=stepB;window.stepA=stepA;window.setAC=setAC;
 async function saveData(){
   document.getElementById('save-btn').disabled=true;
   syncStaffArrays();
-  await saveToFirebase();
+  await saveToSupabase();
   renderAll();
   document.getElementById('save-btn').disabled=false;
 }
@@ -1175,18 +1243,21 @@ window.saveMgrPin=saveMgrPin;
 
 async function savePins(){
   try{
-    await setDoc(doc(db,'dashboard','pins'),{pins:allPins,updatedAt:new Date().toISOString()});
+    await supabase.from('settings').upsert(
+      {key:'pins',value:JSON.stringify(allPins),updated_at:new Date().toISOString()},
+      {onConflict:'key'}
+    );
   }catch(e){console.error('PIN save error',e);}
 }
 
 async function loadPins(){
   try{
-    const snap = await getDoc(doc(db,'dashboard','pins'));
-    if(snap.exists()) allPins = snap.data().pins||{};
+    const {data} = await supabase.from('settings').select('value').eq('key','pins').single();
+    if(data) allPins = JSON.parse(data.value)||{};
   }catch(e){console.error('PIN load error',e);}
 }
 
-loadFromFirebase();
+loadFromSupabase();
 </script>
 </body>
 </html>
