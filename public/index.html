@@ -552,7 +552,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
         <button class="role-toggle-btn" id="role-btn-admin" onclick="setNewRole('admin')">Admin</button>
       </div>
       <div style="display:flex;gap:0;">
-        <button class="shop-toggle-btn sel" id="shop-btn-bot" onclick="setNewShop2('bot')">Bot Ave</button>
+        <button class="shop-toggle-btn sel" id="shop-btn-bot" onclick="setNewShop2('bot')">Boat Ave</button>
         <button class="shop-toggle-btn" id="shop-btn-chalong" onclick="setNewShop2('chalong')">Chalong</button>
       </div>
       <button class="add-btn" onclick="addStaff()">+ Add</button>
@@ -611,7 +611,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
     <div class="page-period" id="qc-week-lbl">—</div>
   </div>
   <div class="shop-tabs-bar">
-    <button class="shop-tab-btn active" id="qc-shop-bot" onclick="switchQCShop('bot')">Bot Avenue</button>
+    <button class="shop-tab-btn active" id="qc-shop-bot" onclick="switchQCShop('bot')">Boat Avenue</button>
     <button class="shop-tab-btn" id="qc-shop-chalong" onclick="switchQCShop('chalong')">Chalong</button>
   </div>
   <div class="week-nav">
@@ -632,7 +632,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
   </div>
   <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap;">
     <div class="shop-tabs-bar" style="margin-bottom:0;border-bottom:none;gap:4px;">
-      <button class="shop-tab-btn active" id="man-shop-bot" onclick="switchManShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Bot Avenue</button>
+      <button class="shop-tab-btn active" id="man-shop-bot" onclick="switchManShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Boat Avenue</button>
       <button class="shop-tab-btn" id="man-shop-chalong" onclick="switchManShop('chalong')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Chalong</button>
     </div>
     <div class="month-nav" style="margin-bottom:0;">
@@ -661,7 +661,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
   <div class="ceo-page active" id="ceo-eval">
     <div style="display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
       <div class="shop-tabs-bar" style="margin-bottom:0;border-bottom:none;gap:4px;">
-        <button class="shop-tab-btn active" id="ceo-shop-bot" onclick="switchCEOShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Bot Avenue</button>
+        <button class="shop-tab-btn active" id="ceo-shop-bot" onclick="switchCEOShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Boat Avenue</button>
         <button class="shop-tab-btn" id="ceo-shop-chalong" onclick="switchCEOShop('chalong')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Chalong</button>
       </div>
       <div class="month-nav" style="margin-bottom:0;">
@@ -1321,7 +1321,7 @@ function renderStaffList(){
       <div class="shop-assign-name">${s.name.toUpperCase()}</div>
       <div class="shop-assign-role ${s.role}">${s.role}</div>
       <div style="display:flex;gap:0;">
-        <button class="shop-toggle-btn${s.shop==='chalong'?'':' sel'}" onclick="setStaffShop(${i},'bot')">Bot Ave</button>
+        <button class="shop-toggle-btn${s.shop==='chalong'?'':' sel'}" onclick="setStaffShop(${i},'bot')">Boat Ave</button>
         <button class="shop-toggle-btn${s.shop==='chalong'?' sel':''}" onclick="setStaffShop(${i},'chalong')">Chalong</button>
       </div>
       <button class="staff-del-btn" onclick="removeStaff(${i})">×</button>
@@ -1725,7 +1725,7 @@ function renderShopAssignList(){
       <div class="shop-assign-name">${s.name.toUpperCase()}</div>
       <div class="shop-assign-role ${s.role}">${s.role}</div>
       <div style="display:flex;gap:0;">
-        <button class="shop-toggle-btn${s.shop==='bot'?' sel':''}" onclick="setStaffShop(${i},'bot')">Bot Ave</button>
+        <button class="shop-toggle-btn${s.shop==='bot'?' sel':''}" onclick="setStaffShop(${i},'bot')">Boat Ave</button>
         <button class="shop-toggle-btn${s.shop==='chalong'?' sel':''}" onclick="setStaffShop(${i},'chalong')">Chalong</button>
       </div>
       <button class="staff-del-btn" onclick="removeStaff(${i})">×</button>
@@ -1893,12 +1893,12 @@ function buildQCForm(){
   const isQC=currentUser&&currentUser.role==='qc';
   const isMgr=currentUser&&(currentUser.role==='manager'||currentUser.role==='ceo');
   const ro=isMgr&&!isQC; // manager/CEO = read-only for form fields, but can approve
-  const shopStaff=STATE.staff.filter(s=>s.role==='barber'&&s.shop===QC_FORM.shop);
+  const shopStaff=STATE.staff.filter(s=>s.role==='barber');
   let html='';
   if(QC_FORM.approved) html+=`<div class="qc-approved-banner">✓ Approved by manager</div>`;
   html+=`<div class="fr2">
     <div class="fr"><label class="flbl">Date</label>
-      <input class="finp" type="date" value="${QC_FORM.report_date||''}" ${ro?'readonly':''} onchange="QC_FORM.report_date=this.value">
+      <input class="finp" type="date" value="${QC_FORM.report_date||''}" max="${new Date().toISOString().split('T')[0]}" ${ro?'readonly':''} onchange="QC_FORM.report_date=this.value">
     </div>
     <div class="fr"><label class="flbl">Time</label>
       <div style="display:flex;gap:6px;">
@@ -2128,12 +2128,18 @@ function calcBlock1(month,year){
 function calcBlock2(month,year){
   const key=pk(month,year);
   const barbers=STATE.staff.filter(s=>s.role==='barber');
+  const admins=STATE.staff.filter(s=>s.role==='admin');
   if(!barbers.length)return 0;
   const avg=barbers.reduce((s,b)=>{
     const d=STATE.barbers[key]?.[b.name]||{};
-    return s+0.5*((d.punctuality||0)<6?1:0)+0.5*((d.dresscode||0)<6?1:0);
+    return s+0.33*((d.punctuality||0)<6?1:0)+0.33*((d.dresscode||0)<6?1:0)+0.34*((d.absences||0)<6?1:0);
   },0)/barbers.length;
-  return Math.round(2000*Math.sqrt(avg));
+  const totalAdminAbs=admins.reduce((s,a)=>{
+    const d=STATE.admins[key]?.[a.name]||{};
+    return s+(d.absences||0);
+  },0);
+  const adminPenalty=Math.min(totalAdminAbs*285,2000);
+  return Math.max(0,Math.round(2000*Math.sqrt(avg))-adminPenalty);
 }
 function calcBlock3(month,year){
   const key=pk(month,year);
@@ -2149,7 +2155,7 @@ function getMMRow(month,year,shop){
   return QC_STATE.managerMonthly.find(m=>m.month===month+1&&m.year===year&&m.shop===shop)||null;
 }
 function calcBlock4fromMM(mm){
-  if(!mm)return null;
+  if(!mm)return 4000;
   return (mm.staff_full?1333:0)+(mm.retention_ok?1333:0)+(mm.newbie_success?1334:0);
 }
 
@@ -2369,7 +2375,7 @@ function renderCEOHistory(){
   if(!rows.length){tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--gray);padding:20px;font-family:'DM Mono',monospace;font-size:11px;">No records yet</td></tr>`;return;}
   tbody.innerHTML=rows.map(r=>`<tr>
     <td>${MS[(r.month||1)-1]} ${r.year}</td>
-    <td>${r.shop==='bot'?'Bot Ave':'Chalong'}</td>
+    <td>${r.shop==='bot'?'Boat Ave':'Chalong'}</td>
     <td class="val-gold">${(r.block1||0).toLocaleString()}</td>
     <td class="val-gold">${(r.block2||0).toLocaleString()}</td>
     <td class="val-gold">${(r.block3||0).toLocaleString()}</td>
