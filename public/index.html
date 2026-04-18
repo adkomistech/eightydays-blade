@@ -545,11 +545,15 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
   <div class="staff-mgmt">
     <div class="staff-mgmt-title">STAFF ROSTER</div>
     <div class="staff-list" id="staff-list"></div>
-    <div class="add-staff-row">
-      <input class="staff-name-input" id="new-staff-name" placeholder="Name (e.g. Alex)" maxlength="30">
+    <div class="add-staff-row" style="flex-wrap:wrap;gap:8px;">
+      <input class="staff-name-input" id="new-staff-name" placeholder="Name (e.g. Alex)" maxlength="30" style="flex:1;min-width:120px;">
       <div class="role-toggle">
         <button class="role-toggle-btn active-barber" id="role-btn-barber" onclick="setNewRole('barber')">Barber</button>
         <button class="role-toggle-btn" id="role-btn-admin" onclick="setNewRole('admin')">Admin</button>
+      </div>
+      <div style="display:flex;gap:0;">
+        <button class="shop-toggle-btn sel" id="shop-btn-bot" onclick="setNewShop2('bot')">Bot Ave</button>
+        <button class="shop-toggle-btn" id="shop-btn-chalong" onclick="setNewShop2('chalong')">Chalong</button>
       </div>
       <button class="add-btn" onclick="addStaff()">+ Add</button>
     </div>
@@ -582,37 +586,8 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
       <span id="mgr-pin-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);"></span>
     </div>
   </div>
-  <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-    <div class="sec-label" style="margin-bottom:10px;">CEO PIN</div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-      <input id="ceo-pin-input" class="avg-input" type="password" maxlength="4" placeholder="4 digits" style="width:120px;">
-      <button class="add-btn" onclick="saveCEOPin()">Save CEO PIN</button>
-      <span id="ceo-pin-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);"></span>
-    </div>
-  </div>
 </div>
 
-<!-- SHOP ASSIGNMENT -->
-<div class="staff-mgmt" style="margin-top:18px;">
-  <div class="staff-mgmt-title">SHOP ASSIGNMENT</div>
-  <div class="sec-label" style="margin-bottom:14px;">Assign each staff member to Bot Avenue or Chalong. Changes save instantly.</div>
-  <div id="shop-assign-list"></div>
-  <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
-    <div class="sec-label" style="margin-bottom:10px;">Add new staff with shop</div>
-    <div class="add-staff-row" style="flex-wrap:wrap;gap:8px;">
-      <input class="staff-name-input" id="new-staff-name2" placeholder="Name" maxlength="30" style="flex:1;min-width:120px;">
-      <div class="role-toggle">
-        <button class="role-toggle-btn active-barber" id="role-btn2-barber" onclick="setNewRole2('barber')">Barber</button>
-        <button class="role-toggle-btn" id="role-btn2-admin" onclick="setNewRole2('admin')">Admin</button>
-      </div>
-      <div style="display:flex;gap:0;">
-        <button class="shop-toggle-btn sel" id="shop-btn2-bot" onclick="setNewShop('bot')">Bot Ave</button>
-        <button class="shop-toggle-btn" id="shop-btn2-chalong" onclick="setNewShop('chalong')">Chalong</button>
-      </div>
-      <button class="add-btn" onclick="addStaffWithShop()">+ Add</button>
-    </div>
-  </div>
-</div>
 
 <!-- QC USERS -->
 <div class="staff-mgmt" style="margin-top:18px;">
@@ -1342,24 +1317,37 @@ function renderStaffList(){
   if(!el)return;
   if(!STATE.staff.length){el.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--gray);padding:12px 0">No staff added yet</div>';return;}
   el.innerHTML=STATE.staff.map((s,i)=>`
-    <div class="staff-row">
-      <div class="staff-row-name">${s.name.toUpperCase()}</div>
-      <div class="staff-row-role ${s.role}">${s.role}</div>
+    <div class="shop-assign-row">
+      <div class="shop-assign-name">${s.name.toUpperCase()}</div>
+      <div class="shop-assign-role ${s.role}">${s.role}</div>
+      <div style="display:flex;gap:0;">
+        <button class="shop-toggle-btn${s.shop==='chalong'?'':' sel'}" onclick="setStaffShop(${i},'bot')">Bot Ave</button>
+        <button class="shop-toggle-btn${s.shop==='chalong'?' sel':''}" onclick="setStaffShop(${i},'chalong')">Chalong</button>
+      </div>
       <button class="staff-del-btn" onclick="removeStaff(${i})">×</button>
     </div>`).join('');
 }
+let newStaffShop2='bot';
+function setNewShop2(shop){
+  newStaffShop2=shop;
+  document.getElementById('shop-btn-bot').className='shop-toggle-btn'+(shop==='bot'?' sel':'');
+  document.getElementById('shop-btn-chalong').className='shop-toggle-btn'+(shop==='chalong'?' sel':'');
+}
+window.setNewShop2=setNewShop2;
 function setNewRole(role){
   newStaffRole=role;
   document.getElementById('role-btn-barber').className='role-toggle-btn'+(role==='barber'?' active-barber':'');
   document.getElementById('role-btn-admin').className='role-toggle-btn'+(role==='admin'?' active-admin':'');
 }
 window.setNewRole=setNewRole;
-function addStaff(){
+async function addStaff(){
   const input=document.getElementById('new-staff-name');
   const name=input.value.trim();
   if(!name){input.focus();return;}
   if(STATE.staff.find(s=>s.name.toLowerCase()===name.toLowerCase())){alert('Name already exists.');return;}
-  STATE.staff.push({name,role:newStaffRole});
+  const shop=newStaffShop2||'bot';
+  const {data} = await supabase.from('staff').insert({name,role:newStaffRole,shop}).select().single();
+  STATE.staff.push({id:data?.id,name,role:newStaffRole,shop});
   input.value='';
   syncStaffArrays();renderAll();renderStaffList();
 }
@@ -1661,9 +1649,10 @@ async function savePins(){
 async function loadPins(){
   try{
     const {data:pinsData} = await supabase.from('settings').select('value').eq('key','pins').single();
-    if(pinsData) allPins = JSON.parse(pinsData.value)||{};
-    const {data:ceoData} = await supabase.from('settings').select('value').eq('key','ceo_pin').single();
-    if(ceoData) QC_STATE.ceoPIN = JSON.parse(ceoData.value)||'';
+    if(pinsData){
+      allPins = JSON.parse(pinsData.value)||{};
+      QC_STATE.ceoPIN = allPins.ceo_pin || '';
+    }
     const {data:qcuData} = await supabase.from('settings').select('value').eq('key','qc_users').single();
     if(qcuData) QC_STATE.qcUsers = JSON.parse(qcuData.value)||[];
   }catch(e){console.error('PIN load error',e);}
@@ -1673,7 +1662,8 @@ async function saveCEOPin(){
   const val=(document.getElementById('ceo-pin-input').value||'').trim();
   if(!/^\d{4}$/.test(val)){alert('PIN — 4 digits');return;}
   QC_STATE.ceoPIN=val;
-  await supabase.from('settings').upsert({key:'ceo_pin',value:JSON.stringify(val),updated_at:new Date().toISOString()},{onConflict:'key'});
+  allPins.ceo_pin=val;
+  await savePins();
   document.getElementById('ceo-pin-input').value='';
   const st=document.getElementById('ceo-pin-status');
   st.textContent='Saved!';setTimeout(()=>st.textContent='',2000);
@@ -1770,6 +1760,11 @@ async function addStaffWithShop(){
   syncStaffArrays();renderAll();renderShopAssignList();renderQCUsersList();
 }
 window.addStaffWithShop=addStaffWithShop;
+window.setStaffShop=setStaffShop;
+window.addQCUser=addQCUser;
+window.delQCUser=delQCUser;
+window.editQCUserPIN=editQCUserPIN;
+window.saveCEOPin=saveCEOPin;
 
 // renderShopAssignList + renderQCUsersList are called from switchTab override below
 
