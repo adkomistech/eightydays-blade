@@ -263,6 +263,172 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 .pin-user-badge{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);}
 .logout-btn{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border);color:var(--gray);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:4px;cursor:pointer;transition:all .2s;z-index:50;}
 .logout-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* ── SHOP TABS ── */
+.shop-tabs-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px;}
+.shop-tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;cursor:pointer;color:var(--gray);border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.shop-tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.shop-tab-btn:hover:not(.active){color:var(--white);}
+
+/* ── WEEK NAV ── */
+.week-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.wnav-btn{width:32px;height:32px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s;}
+.wnav-btn:hover{border-color:var(--gold);color:var(--gold);}
+.wnav-lbl{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--white);}
+
+/* ── QC REPORT CARDS ── */
+.qc-list{display:flex;flex-direction:column;gap:10px;}
+.qc-rc{border:1px solid var(--border);border-radius:8px;background:var(--surface);cursor:pointer;transition:border-color .2s;overflow:hidden;}
+.qc-rc:hover{border-color:var(--gold-dim);}
+.qc-rc.s-green{border-color:rgba(61,190,122,0.5);}
+.qc-rc.s-yellow{border-color:rgba(201,168,76,0.4);}
+.qc-rc.s-red{border-color:rgba(224,62,62,0.4);}
+.qc-rc-head{display:flex;align-items:center;gap:12px;padding:12px 16px;}
+.qc-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.qc-status-dot.green{background:var(--green);}
+.qc-status-dot.yellow{background:var(--gold);}
+.qc-status-dot.red{background:var(--red);}
+.qc-rc-barber{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;flex:1;}
+.qc-rc-svc{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold-dim);letter-spacing:1px;}
+.qc-rc-score{font-family:'DM Mono',monospace;font-size:11px;padding:3px 10px;border-radius:10px;border:1px solid;}
+.qc-rc-score.green{border-color:var(--green);color:var(--green);}
+.qc-rc-score.yellow{border-color:var(--gold);color:var(--gold);}
+.qc-rc-score.red{border-color:var(--red);color:var(--red);}
+.qc-rc-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:1px;}
+.qc-rc-del{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--gray);font-size:14px;padding:3px 7px;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.qc-rc-del:hover{border-color:var(--red);color:var(--red);}
+.qc-add-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:transparent;border:2px dashed var(--border);border-radius:8px;color:var(--gray);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:4px;}
+.qc-add-btn:hover{border-color:var(--gold);color:var(--gold);}
+.qc-empty{text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+
+/* ── QC MODAL FORM ── */
+.qc-approved-banner{background:rgba(61,190,122,0.1);border:1px solid rgba(61,190,122,0.3);border-radius:6px;padding:9px 12px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--green);margin-bottom:14px;}
+.fr{margin-bottom:14px;}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.flbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:5px;display:block;}
+.finp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--white);font-family:'DM Mono',monospace;font-size:13px;padding:8px 11px;outline:none;transition:border-color .2s;}
+.finp:focus{border-color:var(--gold);}
+.fsel{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--white);font-family:'DM Mono',monospace;font-size:13px;padding:8px 11px;outline:none;cursor:pointer;-webkit-appearance:none;}
+.ftxa{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 11px;outline:none;resize:vertical;min-height:64px;transition:border-color .2s;}
+.ftxa:focus{border-color:var(--gold);}
+.tg{display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.tgb{flex:1;padding:8px 6px;background:var(--surface2);border:none;border-right:1px solid var(--border);color:var(--gray);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:center;}
+.tgb:last-child{border-right:none;}
+.tgb.sel-gold{background:rgba(201,168,76,0.2);color:var(--gold);}
+.tgb.sel-green{background:rgba(61,190,122,0.15);color:var(--green);}
+.tgb.sel-red{background:rgba(224,62,62,0.15);color:var(--red);}
+.tgb.sel-gray{background:rgba(136,136,136,0.15);color:var(--white);}
+
+/* ── QC CHECKLIST ── */
+.cs{background:var(--surface2);border:1px solid var(--border);border-radius:7px;margin-bottom:12px;overflow:hidden;}
+.cs-head{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-bottom:1px solid var(--border);}
+.cs-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.cs-score{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:8px;border:1px solid;}
+.cs-score.green{border-color:var(--green);color:var(--green);}
+.cs-score.yellow{border-color:var(--gold);color:var(--gold);}
+.cs-score.red{border-color:var(--red);color:var(--red);}
+.cs-items{padding:8px 13px;}
+.ci{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px;cursor:pointer;user-select:none;}
+.ci:last-child{margin-bottom:0;}
+.ci-box{width:19px;height:19px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;}
+.ci-box.on{background:var(--green);border-color:var(--green);}
+.ci-box.crit-off{border-color:var(--red);background:rgba(224,62,62,0.1);}
+.ci-text{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);line-height:1.4;}
+.badge-crit{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.btn-gold{padding:11px 24px;background:var(--gold);color:#000;border:none;border-radius:5px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
+.btn-gold:hover{opacity:.85;}
+.btn-green{padding:11px 24px;background:var(--green);color:#000;border:none;border-radius:5px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
+.btn-green:hover{opacity:.85;}
+.btn-ghost{padding:11px 18px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--gray);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--red);color:var(--red);}
+
+/* ── MODAL ── */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;overflow-y:auto;padding:16px;align-items:flex-start;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:10px;width:100%;max-width:660px;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;}
+.modal-close{background:transparent;border:1px solid var(--border);color:var(--gray);border-radius:4px;width:30px;height:30px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{border-color:var(--red);color:var(--red);}
+.modal-body{padding:18px 20px;}
+
+/* ── BLOCK CARDS (Управляющий) ── */
+.block-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:18px;}
+.block-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;}
+.block-card-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.block-card-max{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold-dim);margin-bottom:10px;}
+.block-card-val{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;color:var(--gold);}
+.block-card-unit{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);margin-top:2px;}
+.block-card-bar{height:5px;background:var(--surface2);border-radius:3px;margin-top:10px;overflow:hidden;}
+.block-card-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .5s;}
+.total-box{background:var(--surface);border:1px solid var(--gold-dim);border-radius:8px;padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.total-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+.total-formula{font-family:'DM Mono',monospace;font-size:12px;color:var(--white);margin-top:4px;}
+.total-value{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(201,168,76,0.2);}
+.total-unit{font-family:'DM Mono',monospace;font-size:13px;color:var(--gray);}
+
+/* ── CEO PANEL ── */
+.ceo-subtabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px;margin-bottom:22px;width:fit-content;}
+.ceo-stab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border-radius:4px;cursor:pointer;color:var(--gray);border:none;background:transparent;transition:all .2s;}
+.ceo-stab.active{background:var(--gold);color:#000;}
+.ceo-page{display:none;}
+.ceo-page.active{display:block;}
+.ceo-section{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:18px;}
+.ceo-section-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:14px;}
+.toggle3{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.toggle3-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.toggle3-label{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);flex:1;}
+.toggle3-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold-dim);}
+.toggle3-btns{display:flex;gap:0;}
+.toggle3-btn{padding:7px 14px;border:1px solid var(--border);background:var(--surface2);color:var(--gray);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.toggle3-btn:first-child{border-radius:4px 0 0 4px;}
+.toggle3-btn:last-child{border-radius:0 4px 4px 0;border-left:none;}
+.toggle3-btn.sel-yes{background:rgba(61,190,122,0.15);border-color:var(--green);color:var(--green);}
+.toggle3-btn.sel-no{background:rgba(224,62,62,0.12);border-color:var(--red);color:var(--red);}
+.honesty-flag{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:14px 16px;margin-bottom:12px;}
+.honesty-flag.flag-half{border-color:var(--red);}
+.honesty-k{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;}
+.honesty-k.ok{color:var(--green);}
+.honesty-k.bad{color:var(--red);}
+.note-list{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
+.note-item{display:flex;align-items:flex-start;gap:8px;background:rgba(224,62,62,0.07);border:1px solid rgba(224,62,62,0.3);border-radius:5px;padding:8px 12px;}
+.note-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--red);letter-spacing:1px;white-space:nowrap;flex-shrink:0;}
+.note-text{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--white);flex:1;}
+.note-del{background:transparent;border:none;color:var(--gray);cursor:pointer;font-size:14px;flex-shrink:0;padding:0 4px;transition:color .2s;}
+.note-del:hover{color:var(--red);}
+.history-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:11px;}
+.history-table th{text-align:left;color:var(--gray);letter-spacing:2px;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--border);font-weight:400;}
+.history-table td{padding:10px 10px;border-bottom:1px solid var(--border);color:var(--white);}
+.history-table tr:last-child td{border-bottom:none;}
+.history-table .val-gold{color:var(--gold);}
+.history-table .val-total{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);}
+
+/* ── SHOP ASSIGN (Manager tab) ── */
+.shop-assign-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:7px;}
+.shop-assign-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;flex:1;}
+.shop-assign-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:10px;border:1px solid;}
+.shop-assign-role.barber{border-color:var(--gold);color:var(--gold);}
+.shop-assign-role.admin{border-color:var(--green);color:var(--green);}
+.shop-toggle-btn{padding:5px 11px;border:1px solid var(--border);background:var(--surface);color:var(--gray);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.shop-toggle-btn:first-child{border-radius:4px 0 0 4px;}
+.shop-toggle-btn:last-child{border-radius:0 4px 4px 0;border-left:none;}
+.shop-toggle-btn.sel{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold);}
+
+/* ── QC USER MANAGEMENT ── */
+.qcu-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;margin-bottom:7px;}
+.qcu-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;flex:1;}
+.qcu-pin{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:3px;color:var(--gold);}
+.qcu-edit-btn{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--gray);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:4px 8px;cursor:pointer;transition:all .2s;}
+.qcu-edit-btn:hover{border-color:var(--gold);color:var(--gold);}
+.qcu-del{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--gray);font-size:14px;padding:3px 7px;cursor:pointer;transition:all .2s;}
+.qcu-del:hover{border-color:var(--red);color:var(--red);}
+
+@media(max-width:600px){
+  .fr2{grid-template-columns:1fr;}
+  .block-grid{grid-template-columns:1fr 1fr;}
+  .mgr-two-col{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -317,10 +483,13 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
     <div class="pin-user-badge" id="topbar-user-badge" style="display:none;margin-left:8px;"></div>
   </div>
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('barbers',this)">Barbers</button>
-    <button class="tab" onclick="switchTab('admins',this)">Admins</button>
-    <button class="tab" onclick="switchTab('analytics',this)">Analytics</button>
-    <button class="tab" onclick="switchTab('manager',this)">Manager</button>
+    <button class="tab active" id="tab-barbers" onclick="switchTab('barbers',this)">Barbers</button>
+    <button class="tab" id="tab-admins" onclick="switchTab('admins',this)">Admins</button>
+    <button class="tab" id="tab-analytics" onclick="switchTab('analytics',this)">Analytics</button>
+    <button class="tab" id="tab-manager" onclick="switchTab('manager',this)">Manager</button>
+    <button class="tab" id="tab-qc" onclick="switchTab('qc',this)" style="display:none">QC</button>
+    <button class="tab" id="tab-mgr-analytics" onclick="switchTab('mgr-analytics',this)" style="display:none">Управляющий</button>
+    <button class="tab" id="tab-ceo" onclick="switchTab('ceo',this)" style="display:none">CEO</button>
   </div>
 </div>
 
@@ -413,8 +582,180 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
       <span id="mgr-pin-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);"></span>
     </div>
   </div>
+  <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+    <div class="sec-label" style="margin-bottom:10px;">CEO PIN</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <input id="ceo-pin-input" class="avg-input" type="password" maxlength="4" placeholder="4 digits" style="width:120px;">
+      <button class="add-btn" onclick="saveCEOPin()">Save CEO PIN</button>
+      <span id="ceo-pin-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);"></span>
+    </div>
+  </div>
 </div>
+
+<!-- SHOP ASSIGNMENT -->
+<div class="staff-mgmt" style="margin-top:18px;">
+  <div class="staff-mgmt-title">SHOP ASSIGNMENT</div>
+  <div class="sec-label" style="margin-bottom:14px;">Assign each staff member to Bot Avenue or Chalong. Changes save instantly.</div>
+  <div id="shop-assign-list"></div>
+  <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+    <div class="sec-label" style="margin-bottom:10px;">Add new staff with shop</div>
+    <div class="add-staff-row" style="flex-wrap:wrap;gap:8px;">
+      <input class="staff-name-input" id="new-staff-name2" placeholder="Name" maxlength="30" style="flex:1;min-width:120px;">
+      <div class="role-toggle">
+        <button class="role-toggle-btn active-barber" id="role-btn2-barber" onclick="setNewRole2('barber')">Barber</button>
+        <button class="role-toggle-btn" id="role-btn2-admin" onclick="setNewRole2('admin')">Admin</button>
+      </div>
+      <div style="display:flex;gap:0;">
+        <button class="shop-toggle-btn sel" id="shop-btn2-bot" onclick="setNewShop('bot')">Bot Ave</button>
+        <button class="shop-toggle-btn" id="shop-btn2-chalong" onclick="setNewShop('chalong')">Chalong</button>
+      </div>
+      <button class="add-btn" onclick="addStaffWithShop()">+ Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- QC USERS -->
+<div class="staff-mgmt" style="margin-top:18px;">
+  <div class="staff-mgmt-title">QC INSPECTORS</div>
+  <div class="sec-label" style="margin-bottom:14px;">Each QC inspector logs in with their PIN and sees only their own reports.</div>
+  <div id="qc-users-list"></div>
+  <div class="add-staff-row" style="margin-top:12px;flex-wrap:wrap;gap:8px;">
+    <input class="staff-name-input" id="qc-new-name" placeholder="Inspector name" maxlength="30" style="flex:1;min-width:120px;">
+    <input class="avg-input" id="qc-new-pin" type="password" maxlength="4" placeholder="PIN" style="width:100px;">
+    <button class="add-btn" onclick="addQCUser()">+ Add</button>
+  </div>
+</div>
+
 <button class="save-btn" id="save-btn" onclick="saveData()">&#10003; &nbsp;Save &amp; Update</button>
+</div>
+
+<!-- PAGE 5: QC -->
+<div class="page" id="page-qc">
+  <div class="page-header">
+    <div class="page-title">QC REPORTS</div>
+    <div class="page-period" id="qc-week-lbl">—</div>
+  </div>
+  <div class="shop-tabs-bar">
+    <button class="shop-tab-btn active" id="qc-shop-bot" onclick="switchQCShop('bot')">Bot Avenue</button>
+    <button class="shop-tab-btn" id="qc-shop-chalong" onclick="switchQCShop('chalong')">Chalong</button>
+  </div>
+  <div class="week-nav">
+    <button class="wnav-btn" onclick="shiftQCWeek(-1)">&#8249;</button>
+    <div class="wnav-lbl" id="qc-week-range">—</div>
+    <button class="wnav-btn" onclick="shiftQCWeek(1)">&#8250;</button>
+  </div>
+  <div class="sec-label" id="qc-count">0 reports</div>
+  <div class="qc-list" id="qc-list"></div>
+  <button class="qc-add-btn" id="qc-add-btn" onclick="openNewQCReport()" style="display:none">+ New Report</button>
+</div>
+
+<!-- PAGE 6: УПРАВЛЯЮЩИЙ -->
+<div class="page" id="page-mgr-analytics">
+  <div class="page-header">
+    <div class="page-title">УПРАВЛЯЮЩИЙ</div>
+    <div class="page-period">Manager Performance · Read Only</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap;">
+    <div class="shop-tabs-bar" style="margin-bottom:0;border-bottom:none;gap:4px;">
+      <button class="shop-tab-btn active" id="man-shop-bot" onclick="switchManShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Bot Avenue</button>
+      <button class="shop-tab-btn" id="man-shop-chalong" onclick="switchManShop('chalong')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Chalong</button>
+    </div>
+    <div class="month-nav" style="margin-bottom:0;">
+      <button class="mnav-btn" onclick="changeManMonth(-1)">&#8592;</button>
+      <div class="mnav-label" id="man-month-lbl"></div>
+      <button class="mnav-btn" onclick="changeManMonth(1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="block-grid" id="man-blocks"></div>
+  <div class="total-box" id="man-total"></div>
+  <div class="sec-label" style="margin-bottom:14px;">6-Month Dynamics</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:30px;" id="man-charts"></div>
+</div>
+
+<!-- PAGE 7: CEO -->
+<div class="page" id="page-ceo">
+  <div class="page-header">
+    <div class="page-title">CEO PANEL</div>
+  </div>
+  <div class="ceo-subtabs">
+    <button class="ceo-stab active" onclick="switchCEOTab('eval',this)">Оценка управляющего</button>
+    <button class="ceo-stab" onclick="switchCEOTab('history',this)">История начислений</button>
+  </div>
+
+  <!-- EVAL -->
+  <div class="ceo-page active" id="ceo-eval">
+    <div style="display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+      <div class="shop-tabs-bar" style="margin-bottom:0;border-bottom:none;gap:4px;">
+        <button class="shop-tab-btn active" id="ceo-shop-bot" onclick="switchCEOShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Bot Avenue</button>
+        <button class="shop-tab-btn" id="ceo-shop-chalong" onclick="switchCEOShop('chalong')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Chalong</button>
+      </div>
+      <div class="month-nav" style="margin-bottom:0;">
+        <button class="mnav-btn" onclick="changeCEOMonth(-1)">&#8592;</button>
+        <div class="mnav-label" id="ceo-month-lbl"></div>
+        <button class="mnav-btn" onclick="changeCEOMonth(1)">&#8594;</button>
+      </div>
+    </div>
+
+    <div class="ceo-section">
+      <div class="ceo-section-title">Блок 4 — Штат (макс 4 000 ฿)</div>
+      <div class="toggle3" id="ceo-toggles"></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:4px;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">Блок 4: </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-left:10px;" id="ceo-block4-preview">0 ฿</div>
+      </div>
+    </div>
+
+    <div class="ceo-section">
+      <div class="ceo-section-title">Коэффициент честности</div>
+      <div class="honesty-flag" id="ceo-honesty-flag">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;">K честности</div>
+          <div class="honesty-k ok" id="ceo-k-val">1.0</div>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:var(--gray);" id="ceo-k-desc">Замечаний нет</div>
+        <button class="add-btn" onclick="addHonestyNote()" style="background:rgba(224,62,62,0.15);border:1px solid var(--red);color:var(--red);padding:7px 14px;font-size:9px;">+ Замечание</button>
+      </div>
+      <div class="note-list" id="ceo-notes-list"></div>
+    </div>
+
+    <div class="ceo-section" style="background:rgba(201,168,76,0.04);border-color:var(--gold-dim);">
+      <div class="ceo-section-title">Автоматические блоки (из данных BLADE)</div>
+      <div id="ceo-auto-blocks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:14px;"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:1px;">Блоки 1–3 рассчитываются автоматически из barber_records и admin_records за выбранный месяц.</div>
+    </div>
+
+    <div class="total-box" id="ceo-total-preview" style="margin-bottom:14px;"></div>
+    <button class="btn-gold" onclick="saveCEOEval()" style="padding:14px 32px;font-size:11px;letter-spacing:3px;">Сохранить расчёт</button>
+    <span id="ceo-save-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);margin-left:14px;"></span>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="ceo-page" id="ceo-history">
+    <div class="ceo-section">
+      <div class="ceo-section-title">История начислений</div>
+      <div style="overflow-x:auto;">
+        <table class="history-table" id="ceo-history-table">
+          <thead>
+            <tr>
+              <th>Месяц</th><th>Точка</th><th>Блок 1</th><th>Блок 2</th><th>Блок 3</th><th>Блок 4</th><th>K чест.</th><th>Переменная</th><th>Итого</th>
+            </tr>
+          </thead>
+          <tbody id="ceo-history-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="qc-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="qc-modal-title">QC Report</div>
+      <button class="modal-close" onclick="closeQCModal()">&#10005;</button>
+    </div>
+    <div class="modal-body" id="qc-modal-body"></div>
+  </div>
 </div>
 
 <button class="logout-btn" id="logout-btn" style="display:none" onclick="doLogout()">⏻ Logout</button>
@@ -447,6 +788,18 @@ const BONUS_MAP = {crm:2000,schedule:1000,cleaning:1000,barbers:1000,admin:2000}
 let curMonth = new Date().getMonth();
 let curYear  = new Date().getFullYear();
 let STATE = { barbers:{}, admins:{}, staff:[] };
+
+// ── QC / CEO STATE ──
+let QC_STATE = {
+  reports:[], qcUsers:[], managerMonthly:[],
+  ceoPIN:'', shop:'bot', weekOff:0,
+  form:{}, formOpen:false
+};
+let QC_FORM = {};
+let manShop='bot', manMonth=new Date().getMonth(), manYear=new Date().getFullYear();
+let ceoShop='bot', ceoMonth=new Date().getMonth(), ceoYear=new Date().getFullYear();
+let ceoEvalData = {staffFull:true, retentionOk:true, newbieSuccess:true, honestyNotes:[]};
+let newStaffRole2='barber', newStaffShop='bot';
 let BARBERS = [], ADMINS = [];
 let anBarberSel = '', anAdminSel = '';
 let anBarberMons = new Set(), anAdminMons = new Set();
@@ -483,10 +836,10 @@ async function loadFromSupabase(){
   try{
     await loadPins();
 
-    // Load staff
+    // Load staff (with shop)
     const {data:staffData} = await supabase.from('staff').select('*');
     if(staffData && staffData.length>0){
-      STATE.staff = staffData.map(s=>({id:s.id,name:s.name,role:s.role}));
+      STATE.staff = staffData.map(s=>({id:s.id,name:s.name,role:s.role,shop:s.shop||'bot'}));
     } else {
       STATE.staff = defaultStaff();
     }
@@ -524,6 +877,14 @@ async function loadFromSupabase(){
       }
     }
 
+    // Load QC reports
+    const {data:qcData} = await supabase.from('qc_reports').select('*,staff(name,role,shop)').order('report_date',{ascending:false});
+    QC_STATE.reports = qcData || [];
+
+    // Load manager_monthly
+    const {data:mmData} = await supabase.from('manager_monthly').select('*').order('year',{ascending:false}).order('month',{ascending:false});
+    QC_STATE.managerMonthly = mmData || [];
+
     syncStaffArrays();
     setSyncStatus('online','Live · All devices synced');
     document.getElementById('loading').style.display='none';
@@ -554,7 +915,7 @@ async function saveToSupabase(){
     const staffMap = {};
     for(const s of STATE.staff){
       const {data} = await supabase.from('staff')
-        .upsert({name:s.name,role:s.role},{onConflict:'name'})
+        .upsert({name:s.name,role:s.role,shop:s.shop||'bot'},{onConflict:'name'})
         .select('id').single();
       if(data) staffMap[s.name]=data.id;
     }
@@ -676,7 +1037,11 @@ function buildDots(history){
 // ─── RENDER BARBERS ───
 function renderBarbers(){
   document.getElementById('lbl-barbers').textContent=curLabel();
-  const visibleBarbers = (currentUser && currentUser.role==='barber') ? BARBERS.filter(n=>n===currentUser.name) : BARBERS; // admins and managers see all barbers
+  const visibleBarbers = (currentUser && currentUser.role==='barber')
+    ? BARBERS.filter(n=>n===currentUser.name)
+    : (currentUser && currentUser.role==='admin')
+    ? BARBERS.filter(n=>{ const s=STATE.staff.find(st=>st.name===n); return s&&s.shop===currentUser.shop; })
+    : BARBERS;
   document.getElementById('grid-barbers').innerHTML=visibleBarbers.map(name=>{
     const d=getBD(name);
     const hist=getHistory6('barbers',name);
@@ -760,7 +1125,11 @@ function renderBarbers(){
 // ─── RENDER ADMINS ───
 function renderAdmins(){
   document.getElementById('lbl-admins').textContent=curLabel();
-  const visibleAdmins = (currentUser && currentUser.role==='admin') ? ADMINS.filter(n=>n===currentUser.name) : (currentUser && currentUser.role==='barber') ? [] : ADMINS;
+  const visibleAdmins = (currentUser && currentUser.role==='barber')
+    ? []
+    : (currentUser && currentUser.role==='admin')
+    ? ADMINS.filter(n=>{ const s=STATE.staff.find(st=>st.name===n); return s&&s.shop===currentUser.shop; })
+    : ADMINS;
   document.getElementById('grid-admins').innerHTML=visibleAdmins.map(name=>{
     const d=getAD(name);
     const bonus=calcAdminBonus(d);
@@ -1120,25 +1489,31 @@ function checkPin(){
   const pin = pinBuffer;
   pinBuffer = '';
   updatePinDots();
-  // Master code for first setup (when no manager PIN set)
+  // CEO PIN
+  if(QC_STATE.ceoPIN && pin === QC_STATE.ceoPIN){
+    loginAs({name:'CEO', role:'ceo'});return;
+  }
+  // Master code for first setup
   if(!allPins.manager && pin === '1234'){
-    loginAs({name:'Manager', role:'manager'});
-    return;
+    loginAs({name:'Manager', role:'manager'});return;
   }
-  // Check manager PIN
+  // Manager PIN
   if(allPins.manager && pin === allPins.manager){
-    loginAs({name:'Manager', role:'manager'});
-    return;
+    loginAs({name:'Manager', role:'manager'});return;
   }
-  // Check staff PINs
+  // Staff PINs (barber / admin)
   for(const staffMember of STATE.staff){
     const key = staffMember.name.toLowerCase();
     if(allPins[key] && pin === allPins[key]){
-      loginAs(staffMember);
-      return;
+      loginAs(staffMember);return;
     }
   }
-  // Wrong PIN
+  // QC inspector PINs
+  for(const qu of (QC_STATE.qcUsers||[])){
+    if(qu.pin === pin){
+      loginAs({name:qu.name, role:'qc'});return;
+    }
+  }
   document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
   setTimeout(()=>document.getElementById('pin-error').textContent='',2000);
 }
@@ -1149,34 +1524,67 @@ function loginAs(user){
   document.getElementById('pin-overlay').style.display='none';
   document.getElementById('logout-btn').style.display='block';
   const badge = document.getElementById('topbar-user-badge');
-  badge.textContent = user.name.toUpperCase() + (user.role==='manager'?' · MANAGER':' · '+user.role.toUpperCase());
+  const roleLabel = {manager:'MANAGER',ceo:'CEO',barber:'BARBER',admin:'ADMIN',qc:'QC'}[user.role]||user.role.toUpperCase();
+  badge.textContent = user.name.toUpperCase() + ' · ' + roleLabel;
   badge.style.display='block';
   applyUserRole();
-  renderAll();
+  if(user.role==='qc'){renderQCPage();}
+  else if(user.role==='barber'||user.role==='admin'){initAnalytics();renderAll();}
+  else{renderAll();}
 }
 
 function applyUserRole(){
   if(!currentUser) return;
-  const isManager = currentUser.role==='manager';
-  const isBarber  = currentUser.role==='barber';
-  const isAdmin   = currentUser.role==='admin';
+  const r = currentUser.role;
+  const isCEO     = r==='ceo';
+  const isManager = r==='manager';
+  const isAdmin   = r==='admin';
+  const isBarber  = r==='barber';
+  const isQC      = r==='qc';
 
-  document.querySelectorAll('.tab').forEach(t=>{
-    const txt = t.textContent.trim();
-    if(txt==='Manager')   t.style.display = isManager ? '' : 'none';
-    if(txt==='Barbers')   t.style.display = ''; // everyone sees barbers
-    if(txt==='Admins')    t.style.display = isBarber ? 'none' : ''; // barbers don't see admins
-    if(txt==='Analytics') t.style.display = ''; // everyone sees analytics
-  });
+  // Tab visibility
+  const show = (id,v)=>{ const el=document.getElementById(id); if(el) el.style.display=v?'':'none'; };
+  show('tab-barbers',  isCEO||isManager||isAdmin);
+  show('tab-admins',   isCEO||isManager||isAdmin);
+  show('tab-analytics',isCEO||isManager||isAdmin||isBarber);
+  show('tab-manager',  isCEO||isManager);
+  show('tab-qc',       isCEO||isManager||isQC);
+  show('tab-mgr-analytics', isCEO||isManager);
+  show('tab-ceo',      isCEO);
 
-  if(!isManager){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    // Everyone starts on Barbers tab
-    document.getElementById('page-barbers').classList.add('active');
-    document.querySelectorAll('.tab').forEach(t=>{if(t.textContent.trim()==='Barbers')t.classList.add('active');});
-  }
+  // Default landing page
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+
+  let defaultPage, defaultTab;
+  if(isQC){defaultPage='qc';defaultTab='tab-qc';}
+  else if(isBarber||isAdmin){defaultPage='analytics';defaultTab='tab-analytics';}
+  else{defaultPage='barbers';defaultTab='tab-barbers';}
+
+  const pg=document.getElementById('page-'+defaultPage);
+  const tb=document.getElementById(defaultTab);
+  if(pg) pg.classList.add('active');
+  if(tb) tb.classList.add('active');
+
+  // QC add button: visible to manager, ceo, qc
+  const addBtn=document.getElementById('qc-add-btn');
+  if(addBtn) addBtn.style.display=(isCEO||isManager||isQC)?'':'none';
 }
+
+// Keep existing switchTab but extend for new pages
+const _origSwitchTab = window.switchTab;
+window.switchTab = function(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(pg) pg.classList.add('active');
+  if(el) el.classList.add('active');
+  if(name==='analytics') initAnalytics();
+  else if(name==='manager'){renderAll();renderShopAssignList();renderQCUsersList();}
+  else if(name==='qc') renderQCPage();
+  else if(name==='mgr-analytics'){renderMgrAnalytics();}
+  else if(name==='ceo'){loadCEOEvalState();renderCEOEval();renderCEOHistory();}
+};
 
 function doLogout(){
   currentUser = null;
@@ -1252,10 +1660,734 @@ async function savePins(){
 
 async function loadPins(){
   try{
-    const {data} = await supabase.from('settings').select('value').eq('key','pins').single();
-    if(data) allPins = JSON.parse(data.value)||{};
+    const {data:pinsData} = await supabase.from('settings').select('value').eq('key','pins').single();
+    if(pinsData) allPins = JSON.parse(pinsData.value)||{};
+    const {data:ceoData} = await supabase.from('settings').select('value').eq('key','ceo_pin').single();
+    if(ceoData) QC_STATE.ceoPIN = JSON.parse(ceoData.value)||'';
+    const {data:qcuData} = await supabase.from('settings').select('value').eq('key','qc_users').single();
+    if(qcuData) QC_STATE.qcUsers = JSON.parse(qcuData.value)||[];
   }catch(e){console.error('PIN load error',e);}
 }
+
+async function saveCEOPin(){
+  const val=(document.getElementById('ceo-pin-input').value||'').trim();
+  if(!/^\d{4}$/.test(val)){alert('PIN — 4 digits');return;}
+  QC_STATE.ceoPIN=val;
+  await supabase.from('settings').upsert({key:'ceo_pin',value:JSON.stringify(val),updated_at:new Date().toISOString()},{onConflict:'key'});
+  document.getElementById('ceo-pin-input').value='';
+  const st=document.getElementById('ceo-pin-status');
+  st.textContent='Saved!';setTimeout(()=>st.textContent='',2000);
+}
+
+async function saveQCUsersDB(){
+  await supabase.from('settings').upsert({key:'qc_users',value:JSON.stringify(QC_STATE.qcUsers),updated_at:new Date().toISOString()},{onConflict:'key'});
+}
+
+function renderQCUsersList(){
+  const el=document.getElementById('qc-users-list');
+  if(!el)return;
+  if(!QC_STATE.qcUsers.length){el.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gray);padding:6px 0;">No inspectors added yet</div>';return;}
+  el.innerHTML=QC_STATE.qcUsers.map((u,i)=>`
+    <div class="qcu-row">
+      <div class="qcu-name">${u.name}</div>
+      <div class="qcu-pin">••••</div>
+      <button class="qcu-edit-btn" onclick="editQCUserPIN(${i})">Change PIN</button>
+      <button class="qcu-del" onclick="delQCUser(${i})">✕</button>
+    </div>`).join('');
+}
+
+function editQCUserPIN(i){
+  const pin=prompt(`New PIN for ${QC_STATE.qcUsers[i].name} (4 digits):`);
+  if(!pin||!/^\d{4}$/.test(pin)){alert('PIN must be exactly 4 digits');return;}
+  const dup=QC_STATE.qcUsers.find((u,j)=>u.pin===pin&&j!==i);
+  if(dup){alert('PIN already taken by '+dup.name);return;}
+  QC_STATE.qcUsers[i].pin=pin;
+  saveQCUsersDB();renderQCUsersList();
+}
+
+async function addQCUser(){
+  const name=(document.getElementById('qc-new-name').value||'').trim();
+  const pin=(document.getElementById('qc-new-pin').value||'').trim();
+  if(!name){document.getElementById('qc-new-name').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('qc-new-name').style.borderColor='',1500);return;}
+  if(!/^\d{4}$/.test(pin)){document.getElementById('qc-new-pin').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('qc-new-pin').style.borderColor='',1500);return;}
+  if(QC_STATE.qcUsers.find(u=>u.pin===pin)){alert('PIN already taken');return;}
+  QC_STATE.qcUsers.push({name,pin});
+  await saveQCUsersDB();
+  document.getElementById('qc-new-name').value='';document.getElementById('qc-new-pin').value='';
+  renderQCUsersList();
+}
+
+async function delQCUser(i){
+  if(!confirm(`Remove ${QC_STATE.qcUsers[i].name}?`))return;
+  QC_STATE.qcUsers.splice(i,1);
+  await saveQCUsersDB();renderQCUsersList();
+}
+
+// ══════════════════════════════════════════
+// SHOP ASSIGNMENT
+// ══════════════════════════════════════════
+function renderShopAssignList(){
+  const el=document.getElementById('shop-assign-list');
+  if(!el)return;
+  if(!STATE.staff.length){el.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gray);padding:8px 0;">No staff added yet</div>';return;}
+  el.innerHTML=STATE.staff.map((s,i)=>`
+    <div class="shop-assign-row">
+      <div class="shop-assign-name">${s.name.toUpperCase()}</div>
+      <div class="shop-assign-role ${s.role}">${s.role}</div>
+      <div style="display:flex;gap:0;">
+        <button class="shop-toggle-btn${s.shop==='bot'?' sel':''}" onclick="setStaffShop(${i},'bot')">Bot Ave</button>
+        <button class="shop-toggle-btn${s.shop==='chalong'?' sel':''}" onclick="setStaffShop(${i},'chalong')">Chalong</button>
+      </div>
+      <button class="staff-del-btn" onclick="removeStaff(${i})">×</button>
+    </div>`).join('');
+}
+async function setStaffShop(idx,shop){
+  STATE.staff[idx].shop=shop;
+  const s=STATE.staff[idx];
+  if(s.id){await supabase.from('staff').update({shop}).eq('id',s.id);}
+  renderShopAssignList();
+}
+function setNewRole2(role){
+  newStaffRole2=role;
+  document.getElementById('role-btn2-barber').className='role-toggle-btn'+(role==='barber'?' active-barber':'');
+  document.getElementById('role-btn2-admin').className='role-toggle-btn'+(role==='admin'?' active-admin':'');
+}
+window.setNewRole2=setNewRole2;
+function setNewShop(shop){
+  newStaffShop=shop;
+  document.getElementById('shop-btn2-bot').className='shop-toggle-btn'+(shop==='bot'?' sel':'');
+  document.getElementById('shop-btn2-chalong').className='shop-toggle-btn'+(shop==='chalong'?' sel':'');
+}
+window.setNewShop=setNewShop;
+async function addStaffWithShop(){
+  const input=document.getElementById('new-staff-name2');
+  const name=(input.value||'').trim();
+  if(!name){input.focus();return;}
+  if(STATE.staff.find(s=>s.name.toLowerCase()===name.toLowerCase())){alert('Name already exists.');return;}
+  const {data} = await supabase.from('staff').insert({name,role:newStaffRole2,shop:newStaffShop}).select().single();
+  STATE.staff.push({id:data?.id,name,role:newStaffRole2,shop:newStaffShop});
+  input.value='';
+  syncStaffArrays();renderAll();renderShopAssignList();renderQCUsersList();
+}
+window.addStaffWithShop=addStaffWithShop;
+
+// renderShopAssignList + renderQCUsersList are called from switchTab override below
+
+// ══════════════════════════════════════════
+// QC HELPERS
+// ══════════════════════════════════════════
+function getWeekBounds(off){
+  const now=new Date(),day=now.getDay()||7;
+  const mon=new Date(now);mon.setDate(now.getDate()-day+1+off*7);mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  return{mon,sun};
+}
+function inQCWeek(dateStr,off){
+  if(!dateStr)return false;
+  const{mon,sun}=getWeekBounds(off);
+  const d=new Date(dateStr+'T12:00:00');
+  return d>=mon&&d<=sun;
+}
+function fmtDate(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'});}
+function calcQCScore(r){
+  let ok=0,t=0;
+  Object.values(r.checks||{}).forEach(v=>{if(typeof v==='boolean'){t++;if(v)ok++;}});
+  return{ok,t};
+}
+function calcQCStatus(r){
+  const{ok,t}=calcQCScore(r);
+  if(!t)return'yellow';
+  const p=ok/t;
+  return p>=1?'green':p>=0.6?'yellow':'red';
+}
+function qcSvcLabel(r){
+  const p=[];
+  if(r.haircut==='premium')p.push('Premium Cut');
+  if(r.haircut==='royal')p.push('Royal Cut');
+  if(r.beard==='premium')p.push('Premium Beard');
+  if(r.beard==='royal')p.push('Royal Shave');
+  return p.join(' + ')||'No services';
+}
+
+// ══════════════════════════════════════════
+// QC PAGE RENDER
+// ══════════════════════════════════════════
+function switchQCShop(shop){
+  QC_STATE.shop=shop;
+  document.getElementById('qc-shop-bot').className='shop-tab-btn'+(shop==='bot'?' active':'');
+  document.getElementById('qc-shop-chalong').className='shop-tab-btn'+(shop==='chalong'?' active':'');
+  renderQCPage();
+}
+window.switchQCShop=switchQCShop;
+
+function shiftQCWeek(d){QC_STATE.weekOff+=d;renderQCPage();}
+window.shiftQCWeek=shiftQCWeek;
+
+function renderQCPage(){
+  const off=QC_STATE.weekOff,{mon,sun}=getWeekBounds(off);
+  const lbl=off===0?`This week: ${fmtDate(mon)}–${fmtDate(sun)}`:off===-1?`Last week: ${fmtDate(mon)}–${fmtDate(sun)}`:`${fmtDate(mon)}–${fmtDate(sun)}`;
+  const wlbl=document.getElementById('qc-week-range');if(wlbl)wlbl.textContent=lbl;
+  const wlbl2=document.getElementById('qc-week-lbl');if(wlbl2)wlbl2.textContent=lbl;
+
+  const isQC=currentUser&&currentUser.role==='qc';
+  let reps=QC_STATE.reports.filter(r=>r.shop===QC_STATE.shop&&inQCWeek(r.report_date,off));
+  if(isQC) reps=reps.filter(r=>r.qc_user_name===currentUser.name);
+
+  const cnt=document.getElementById('qc-count');
+  if(cnt)cnt.textContent=reps.length+' report'+(reps.length===1?'':'s');
+
+  const el=document.getElementById('qc-list');if(!el)return;
+  if(!reps.length){
+    el.innerHTML='<div class="qc-empty">No reports for this week</div>';return;
+  }
+  const canDel=currentUser&&(currentUser.role==='manager'||currentUser.role==='ceo'||currentUser.role==='qc');
+  el.innerHTML=reps.map(r=>{
+    const{ok,t}=calcQCScore(r),st=calcQCStatus(r);
+    const staffName=r.staff?.name||r.staff_name||'—';
+    const delBtn=canDel?`<button class="qc-rc-del" onclick="event.stopPropagation();deleteQCReport('${r.id}')" title="Delete">🗑</button>`:'';
+    const apprBadge=r.approved?'<span style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--green);letter-spacing:1px;">✓ Approved</span>':'';
+    return`<div class="qc-rc s-${st}" onclick="openQCReport('${r.id}')">
+      <div class="qc-rc-head">
+        <div class="qc-status-dot ${st}"></div>
+        <div style="flex:1;">
+          <div class="qc-rc-barber">${staffName}</div>
+          <div class="qc-rc-svc">${qcSvcLabel(r)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div class="qc-rc-score ${st}">${ok}/${t}</div>
+          ${apprBadge}
+        </div>
+        <div class="qc-rc-meta" style="margin-left:8px;">${r.report_date||''}<br>${r.qc_user_name||''}</div>
+        ${delBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+window.renderQCPage=renderQCPage;
+
+// ══════════════════════════════════════════
+// QC MODAL
+// ══════════════════════════════════════════
+function openNewQCReport(){
+  QC_FORM={id:null,shop:QC_STATE.shop,report_date:new Date().toISOString().split('T')[0],
+    time_from:'10:00',time_to:'11:00',staff_id:'',staff_name:'',
+    client_type:'unknown',is_new_client:false,haircut:'none',beard:'none',
+    checks:{},notes:'',comment_qc:'',comment_mgr:'',approved:false,
+    qc_user_name:currentUser?currentUser.name:''};
+  document.getElementById('qc-modal-title').textContent='New QC Report';
+  buildQCForm();
+  document.getElementById('qc-modal').classList.add('open');
+}
+window.openNewQCReport=openNewQCReport;
+
+function openQCReport(id){
+  const r=QC_STATE.reports.find(x=>x.id===id);if(!r)return;
+  QC_FORM=JSON.parse(JSON.stringify(r));
+  QC_FORM.staff_id=r.staff_id||'';
+  QC_FORM.staff_name=r.staff?.name||r.staff_name||'';
+  document.getElementById('qc-modal-title').textContent='QC Report';
+  buildQCForm();
+  document.getElementById('qc-modal').classList.add('open');
+}
+window.openQCReport=openQCReport;
+
+function closeQCModal(){document.getElementById('qc-modal').classList.remove('open');}
+window.closeQCModal=closeQCModal;
+
+function buildQCForm(){
+  const isQC=currentUser&&currentUser.role==='qc';
+  const isMgr=currentUser&&(currentUser.role==='manager'||currentUser.role==='ceo');
+  const ro=isMgr&&!isQC; // manager/CEO = read-only for form fields, but can approve
+  const shopStaff=STATE.staff.filter(s=>s.role==='barber'&&s.shop===QC_FORM.shop);
+  let html='';
+  if(QC_FORM.approved) html+=`<div class="qc-approved-banner">✓ Approved by manager</div>`;
+  html+=`<div class="fr2">
+    <div class="fr"><label class="flbl">Date</label>
+      <input class="finp" type="date" value="${QC_FORM.report_date||''}" ${ro?'readonly':''} onchange="QC_FORM.report_date=this.value">
+    </div>
+    <div class="fr"><label class="flbl">Time</label>
+      <div style="display:flex;gap:6px;">
+        <input class="finp" type="time" value="${QC_FORM.time_from||''}" style="flex:1;" ${ro?'readonly':''} onchange="QC_FORM.time_from=this.value">
+        <input class="finp" type="time" value="${QC_FORM.time_to||''}" style="flex:1;" ${ro?'readonly':''} onchange="QC_FORM.time_to=this.value">
+      </div>
+    </div>
+  </div>`;
+  html+=`<div class="fr"><label class="flbl">Barber</label>`;
+  if(ro){html+=`<div class="finp" style="cursor:default;">${QC_FORM.staff_name||'—'}</div>`;}
+  else{html+=`<select class="fsel" onchange="QC_FORM.staff_id=this.value;QC_FORM.staff_name=this.options[this.selectedIndex].text">
+      <option value="">— select —</option>
+      ${shopStaff.map(b=>`<option value="${b.id||''}" ${QC_FORM.staff_id===(b.id||'')?'selected':''}>${b.name}</option>`).join('')}
+    </select>`;}
+  html+=`</div>`;
+  html+=`<div class="fr"><label class="flbl">Client type</label>
+    <div class="tg">
+      <button class="tgb${QC_FORM.client_type==='unknown'?' sel-red':''}" onclick="setQCCT('unknown')">Unknown</button>
+      <button class="tgb${QC_FORM.client_type==='local'?' sel-gold':''}" onclick="setQCCT('local')">Local</button>
+      <button class="tgb${QC_FORM.client_type==='winter'?' sel-gold':''}" onclick="setQCCT('winter')">Winter</button>
+      <button class="tgb${QC_FORM.client_type==='travel'?' sel-gray':''}" onclick="setQCCT('travel')">Travel</button>
+    </div>
+  </div>
+  <div class="fr"><label class="flbl">New client?</label>
+    <div class="tg">
+      <button class="tgb${QC_FORM.is_new_client?' sel-gold':''}" onclick="setQCIN(true)">New</button>
+      <button class="tgb${!QC_FORM.is_new_client?' sel-gray':''}" onclick="setQCIN(false)">Regular</button>
+    </div>
+  </div>
+  <div class="fr2">
+    <div class="fr"><label class="flbl">Haircut</label>
+      <div class="tg">
+        <button class="tgb${QC_FORM.haircut==='none'?' sel-gray':''}" onclick="setQCHC('none')">None</button>
+        <button class="tgb${QC_FORM.haircut==='premium'?' sel-gold':''}" onclick="setQCHC('premium')">Premium</button>
+        <button class="tgb${QC_FORM.haircut==='royal'?' sel-gold':''}" onclick="setQCHC('royal')">Royal</button>
+      </div>
+    </div>
+    <div class="fr"><label class="flbl">Beard</label>
+      <div class="tg">
+        <button class="tgb${QC_FORM.beard==='none'?' sel-gray':''}" onclick="setQCBD('none')">None</button>
+        <button class="tgb${QC_FORM.beard==='premium'?' sel-gold':''}" onclick="setQCBD('premium')">Premium</button>
+        <button class="tgb${QC_FORM.beard==='royal'?' sel-gold':''}" onclick="setQCBD('royal')">Royal</button>
+      </div>
+    </div>
+  </div>
+  <div id="qc-check-area"></div>
+  <div class="fr" style="margin-top:12px;"><label class="flbl">QC Notes</label>
+    <textarea class="ftxa" onchange="QC_FORM.comment_qc=this.value">${QC_FORM.comment_qc||''}</textarea>
+  </div>`;
+  if(isMgr){html+=`<div class="fr"><label class="flbl">Manager comment</label>
+    <textarea class="ftxa" onchange="QC_FORM.comment_mgr=this.value">${QC_FORM.comment_mgr||''}</textarea>
+  </div>`;}
+  html+=`<div class="btn-row">`;
+  if(!ro||isQC) html+=`<button class="btn-gold" onclick="saveQCReport()">Save</button>`;
+  if(isMgr&&!QC_FORM.approved) html+=`<button class="btn-green" onclick="approveQCReport()">✓ Approve</button>`;
+  if(isMgr&&QC_FORM.approved) html+=`<button class="btn-green" style="opacity:.5;cursor:default;" disabled>✓ Approved</button>`;
+  if(isMgr) html+=`<button class="btn-gold" onclick="saveMgrQCComment()">Save Comment</button>`;
+  html+=`<button class="btn-ghost" onclick="closeQCModal()">Close</button></div>`;
+  document.getElementById('qc-modal-body').innerHTML=html;
+  buildQCChecklist();
+}
+window.buildQCForm=buildQCForm;
+
+// QC form toggles
+function setQCCT(v){QC_FORM.client_type=v;buildQCForm();}
+function setQCIN(v){QC_FORM.is_new_client=v;buildQCForm();}
+function setQCHC(v){QC_FORM.haircut=v;buildQCForm();}
+function setQCBD(v){QC_FORM.beard=v;buildQCForm();}
+window.setQCCT=setQCCT;window.setQCIN=setQCIN;window.setQCHC=setQCHC;window.setQCBD=setQCBD;
+
+function toggleQCCheck(key){
+  if(currentUser&&currentUser.role==='manager'&&QC_FORM.approved)return;
+  QC_FORM.checks=QC_FORM.checks||{};
+  QC_FORM.checks[key]=!QC_FORM.checks[key];
+  buildQCChecklist();
+}
+window.toggleQCCheck=toggleQCCheck;
+
+function buildQCChecklist(){
+  const area=document.getElementById('qc-check-area');if(!area)return;
+  const ct=QC_FORM.client_type||'unknown',isNew=QC_FORM.is_new_client,hc=QC_FORM.haircut||'none',bd=QC_FORM.beard||'none';
+  const ck=QC_FORM.checks||{};
+  if(hc==='none'&&bd==='none'){area.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;padding:10px 0;">Select services above</div>';return;}
+  const sections=[];
+  // CRM
+  const crm=[];
+  crm.push({k:'crmCategory',lbl:'Client category marked (Local/Winter/Travel)',crit:ct==='unknown'});
+  if(ct!=='travel')crm.push({k:'crmName',lbl:'Client name'});
+  if(ct==='local'||ct==='winter'){crm.push({k:'crmPhone',lbl:'Client phone'});crm.push({k:'crmPhoto',lbl:'Client photo'});crm.push({k:'crmHair360',lbl:'360° haircut photo'});crm.push({k:'crmCoffee',lbl:'Coffee preference noted'});}
+  if(ct==='unknown'){crm.push({k:'crmPhoto',lbl:'Client photo'});crm.push({k:'crmHair360',lbl:'360° haircut photo'});}
+  sections.push({title:'CRM — Altegio',items:crm});
+  // Admin camera
+  const cam=[];
+  if(isNew)cam.push({k:'adminTricho',lbl:'Offered trichoscope (new client)'});
+  cam.push({k:'adminDuration',lbl:'Informed about duration and price'});
+  cam.push({k:'adminUpsell',lbl:'Offered upsell'});
+  cam.push({k:'adminCoffee',lbl:'Offered coffee/tea'});
+  cam.push({k:'adminPayment',lbl:'Stood up and cashed out client'});
+  cam.push({k:'adminCosmetics',lbl:'Offered cosmetics'});
+  cam.push({k:'adminNextBook',lbl:'Offered next booking'});
+  cam.push({k:'adminSamples',lbl:'Offered samples (if cosmetics declined)'});
+  sections.push({title:'Camera — Admin',items:cam});
+  // Barber
+  if(hc!=='none'){
+    sections.push({title:'Barber — Hygiene',items:[{k:'barberGloves',lbl:'Black gloves on'},{k:'barberMask',lbl:'Mask on'}]});
+    const proc=[];
+    if(hc==='premium'){
+      proc.push({k:'hairWash1',lbl:'1st hair wash'});proc.push({k:'barberShampooDemo',lbl:'Shampoo demo on 1st wash'});
+      if(isNew)proc.push({k:'barberDiscussion',lbl:'Haircut discussion + references'});
+      proc.push({k:'cleanerFloor',lbl:'Cleaner swept around chair'});proc.push({k:'hairWash2',lbl:'2nd hair wash'});
+      proc.push({k:'barberStyleDemo',lbl:'Styling product demo'});proc.push({k:'barberAfterShave',lbl:'Auto-shave after cut'});
+      proc.push({k:'barberToolClean',lbl:'Tools in barbicide/sanitizer'});proc.push({k:'cleanerWash',lbl:'Cleaner disinfected sink'});
+      sections.push({title:'Barber — Premium Haircut',items:proc});
+    }else if(hc==='royal'){
+      proc.push({k:'royalTricho',lbl:'Trichoscope — showed hair condition (before wash)'});
+      proc.push({k:'hairWash1',lbl:'1st hair wash'});proc.push({k:'barberShampooDemo',lbl:'Shampoo demo on 1st wash'});
+      proc.push({k:'royalScrub',lbl:'Head scrub (1st wash)'});proc.push({k:'royalMassager',lbl:'Head massagers (1 min)'});
+      if(isNew)proc.push({k:'barberDiscussion',lbl:'Haircut discussion + references'});
+      proc.push({k:'cleanerFloor',lbl:'Cleaner swept around chair'});proc.push({k:'hairWash2',lbl:'2nd hair wash'});
+      proc.push({k:'barberShampooDemo2',lbl:'Shampoo demo on 2nd wash'});proc.push({k:'royalShampoo2',lbl:'Anti-hairloss shampoo (2nd wash)'});
+      proc.push({k:'royalMassager2',lbl:'Massagers on 2nd wash'});proc.push({k:'royalTonic',lbl:'Anti-hairloss tonic + vibro-massager'});
+      proc.push({k:'barberStyleDemo',lbl:'Styling product demo'});proc.push({k:'barberAfterShave',lbl:'Auto-shave after cut'});
+      proc.push({k:'barberToolClean',lbl:'Tools in barbicide/sanitizer'});proc.push({k:'cleanerWash',lbl:'Cleaner disinfected sink'});
+      sections.push({title:'Barber — Royal Haircut',items:proc});
+    }
+  }
+  if(bd!=='none'){
+    const bi=[];
+    if(bd==='premium'){
+      bi.push({k:'beardWash',lbl:'Beard wash (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Lavender oil on hot towel'});
+      bi.push({k:'beardHotTowel',lbl:'Hot towel (2 min)'});bi.push({k:'beardSpongies',lbl:'Eye sponges'});
+      bi.push({k:'beardPreshave',lbl:'Menthol pre-shave'});bi.push({k:'beardMenthol',lbl:'Menthol oil on cold towel'});
+      bi.push({k:'beardColdTowel',lbl:'Cold towel (2 min)'});bi.push({k:'beardAfter',lbl:'Aftershave applied'});bi.push({k:'beardBalm',lbl:'Beard balm'});
+      sections.push({title:'Beard — Premium',items:bi});
+    }else if(bd==='royal'){
+      bi.push({k:'beardWash',lbl:'Beard wash (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Lavender oil on hot towel'});
+      bi.push({k:'beardHotTowel',lbl:'Hot towel (2 min)'});bi.push({k:'royalVibro1',lbl:'Vibro-massagers (hot stage)'});
+      bi.push({k:'beardSpongies',lbl:'Eye sponges'});bi.push({k:'beardPreshave',lbl:'Menthol pre-shave'});
+      bi.push({k:'royalPatches',lbl:'Under-eye patches'});bi.push({k:'beardMenthol',lbl:'Menthol oil on cold towel'});
+      bi.push({k:'beardColdTowel',lbl:'Cold towel (2 min)'});bi.push({k:'royalVibro2',lbl:'Vibro-massagers (cold stage)'});
+      bi.push({k:'detoxNeroli',lbl:'Neroli detox oil'});bi.push({k:'detoxAmber',lbl:'Amber shampoo (foam)'});
+      bi.push({k:'detoxLilly',lbl:'Lilly cream-balm'});bi.push({k:'beardAfter',lbl:'Aftershave applied'});
+      sections.push({title:'Beard — Royal Shave',items:bi});
+    }
+  }
+  area.innerHTML=sections.map(s=>{
+    const done=s.items.filter(i=>ck[i.k]===true).length,tot=s.items.length;
+    const p=tot?done/tot:0,sc=p>=1?'green':p>=0.6?'yellow':'red';
+    return`<div class="cs">
+      <div class="cs-head"><div class="cs-title">${s.title}</div><div class="cs-score ${sc}">${done}/${tot}</div></div>
+      <div class="cs-items">${s.items.map(i=>{
+        const on=ck[i.k]===true,boxCls=on?'on':(i.crit&&ck[i.k]===false?'crit-off':'');
+        return`<div class="ci" onclick="toggleQCCheck('${i.k}')">
+          <div class="ci-box ${boxCls}">${on?'<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</div>
+          <div class="ci-text">${i.lbl}${i.crit?'<span class="badge-crit">CRIT</span>':''}</div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+}
+window.buildQCChecklist=buildQCChecklist;
+
+async function saveQCReport(){
+  if(!QC_FORM.staff_id&&!QC_FORM.staff_name){alert('Select a barber');return;}
+  const{ok,t}=calcQCScore(QC_FORM);
+  const payload={
+    shop:QC_FORM.shop||QC_STATE.shop,
+    report_date:QC_FORM.report_date,
+    time_from:QC_FORM.time_from,time_to:QC_FORM.time_to,
+    staff_id:QC_FORM.staff_id||null,staff_name:QC_FORM.staff_name,
+    client_type:QC_FORM.client_type,is_new_client:!!QC_FORM.is_new_client,
+    haircut:QC_FORM.haircut,beard:QC_FORM.beard,
+    checks:QC_FORM.checks||{},score:ok,total:t,
+    notes:QC_FORM.notes||'',comment_qc:document.querySelector('[onchange="QC_FORM.comment_qc=this.value"]')?.value||QC_FORM.comment_qc||'',
+    comment_mgr:QC_FORM.comment_mgr||'',approved:false,
+    qc_user_name:QC_FORM.qc_user_name||''
+  };
+  setSyncStatus('saving','Saving...');
+  try{
+    if(QC_FORM.id){
+      const{data}=await supabase.from('qc_reports').update(payload).eq('id',QC_FORM.id).select('*,staff(name,role,shop)').single();
+      if(data){const idx=QC_STATE.reports.findIndex(r=>r.id===QC_FORM.id);if(idx>=0)QC_STATE.reports[idx]=data;}
+    }else{
+      const{data}=await supabase.from('qc_reports').insert(payload).select('*,staff(name,role,shop)').single();
+      if(data)QC_STATE.reports.unshift(data);
+    }
+    setSyncStatus('online','Saved');showToast();
+  }catch(e){setSyncStatus('error','Save failed');console.error(e);}
+  closeQCModal();renderQCPage();
+}
+window.saveQCReport=saveQCReport;
+
+async function approveQCReport(){
+  const comment=document.querySelector('[onchange="QC_FORM.comment_mgr=this.value"]')?.value||QC_FORM.comment_mgr||'';
+  const{data}=await supabase.from('qc_reports').update({approved:true,comment_mgr:comment}).eq('id',QC_FORM.id).select('*,staff(name,role,shop)').single();
+  if(data){const idx=QC_STATE.reports.findIndex(r=>r.id===QC_FORM.id);if(idx>=0)QC_STATE.reports[idx]=data;}
+  closeQCModal();renderQCPage();showToast();
+}
+window.approveQCReport=approveQCReport;
+
+async function saveMgrQCComment(){
+  const comment=document.querySelector('[onchange="QC_FORM.comment_mgr=this.value"]')?.value||'';
+  if(!QC_FORM.id)return;
+  await supabase.from('qc_reports').update({comment_mgr:comment}).eq('id',QC_FORM.id);
+  closeQCModal();showToast();
+}
+window.saveMgrQCComment=saveMgrQCComment;
+
+async function deleteQCReport(id){
+  if(!confirm('Delete this report? This cannot be undone.'))return;
+  await supabase.from('qc_reports').delete().eq('id',id);
+  QC_STATE.reports=QC_STATE.reports.filter(r=>r.id!==id);
+  renderQCPage();
+}
+window.deleteQCReport=deleteQCReport;
+
+// ══════════════════════════════════════════
+// MANAGER ANALYTICS (Управляющий)
+// ══════════════════════════════════════════
+function calcBlock1(month,year){
+  const key=pk(month,year);
+  const barbers=STATE.staff.filter(s=>s.role==='barber');
+  const T=barbers.length;if(!T)return 0;
+  const N=barbers.filter(b=>(STATE.barbers[key]?.[b.name]?.standards||0)>=6).length;
+  return Math.round(10000*(1-0.20*N/T));
+}
+function calcBlock2(month,year){
+  const key=pk(month,year);
+  const barbers=STATE.staff.filter(s=>s.role==='barber');
+  if(!barbers.length)return 0;
+  const avg=barbers.reduce((s,b)=>{
+    const d=STATE.barbers[key]?.[b.name]||{};
+    return s+0.5*((d.punctuality||0)<6?1:0)+0.5*((d.dresscode||0)<6?1:0);
+  },0)/barbers.length;
+  return Math.round(2000*Math.sqrt(avg));
+}
+function calcBlock3(month,year){
+  const key=pk(month,year);
+  const admins=STATE.staff.filter(s=>s.role==='admin');
+  if(!admins.length)return 0;
+  const avg=admins.reduce((s,a)=>{
+    const d=STATE.admins[key]?.[a.name]||{};
+    return s+calcAdminBonus(d).total/7000;
+  },0)/admins.length;
+  return Math.round(4000*Math.sqrt(Math.min(avg,1)));
+}
+function getMMRow(month,year,shop){
+  return QC_STATE.managerMonthly.find(m=>m.month===month+1&&m.year===year&&m.shop===shop)||null;
+}
+function calcBlock4fromMM(mm){
+  if(!mm)return null;
+  return (mm.staff_full?1333:0)+(mm.retention_ok?1333:0)+(mm.newbie_success?1334:0);
+}
+
+function switchManShop(shop){
+  manShop=shop;
+  document.getElementById('man-shop-bot').className='shop-tab-btn'+(shop==='bot'?' active':'');
+  document.getElementById('man-shop-chalong').className='shop-tab-btn'+(shop==='chalong'?' active':'');
+  renderMgrAnalytics();
+}
+window.switchManShop=switchManShop;
+function changeManMonth(d){manMonth+=d;if(manMonth>11){manMonth=0;manYear++;}if(manMonth<0){manMonth=11;manYear--;}renderMgrAnalytics();}
+window.changeManMonth=changeManMonth;
+
+function renderMgrAnalytics(){
+  const lbl=document.getElementById('man-month-lbl');if(lbl)lbl.textContent=`${MS[manMonth]} ${manYear}`;
+  const b1=calcBlock1(manMonth,manYear),b2=calcBlock2(manMonth,manYear),b3=calcBlock3(manMonth,manYear);
+  const mm=getMMRow(manMonth,manYear,manShop);
+  const b4raw=calcBlock4fromMM(mm);const b4=b4raw!==null?b4raw:0;
+  const k=mm?mm.honesty_flag:1.0;
+  const variable=b1+b2+b3+b4;
+  const total=Math.round(30000+variable*k);
+
+  const blockDefs=[
+    {title:'Quality',max:10000,val:b1,desc:'Standards violations'},
+    {title:'Discipline',max:2000,val:b2,desc:'Punct + Dresscode'},
+    {title:'Admins',max:4000,val:b3,desc:'Admin KPI bonus'},
+    {title:'Staff',max:4000,val:b4!==null?b4:0,desc:b4raw!==null?'Set by CEO':'Not set yet'},
+  ];
+  const blocksEl=document.getElementById('man-blocks');
+  if(blocksEl)blocksEl.innerHTML=blockDefs.map(b=>{
+    const pct=b.max>0?Math.round(b.val/b.max*100):0;
+    const clr=pct>=80?'var(--green)':pct>=50?'var(--gold)':'var(--red)';
+    return`<div class="block-card">
+      <div class="block-card-title">${b.title}</div>
+      <div class="block-card-max">max ${b.max.toLocaleString()} ฿</div>
+      <div class="block-card-val" style="color:${clr}">${b.val.toLocaleString()}</div>
+      <div class="block-card-unit">฿ · ${pct}%</div>
+      <div class="block-card-bar"><div class="block-card-fill" style="width:${pct}%;background:${clr}"></div></div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gray);margin-top:6px;letter-spacing:1px;">${b.desc}</div>
+    </div>`;
+  }).join('');
+
+  const totalEl=document.getElementById('man-total');
+  if(totalEl)totalEl.innerHTML=`
+    <div><div class="total-label">Manager Salary</div>
+      <div class="total-formula">30,000 + ${variable.toLocaleString()} × ${k} (K)</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="total-value">${total.toLocaleString()}</div>
+      <div class="total-unit">฿</div>
+    </div>`;
+
+  // 6-month chart
+  const months=[];let m=manMonth,y=manYear;
+  for(let i=0;i<6;i++){months.unshift({m,y});m--;if(m<0){m=11;y--;}}
+  const labels=months.map(x=>MS[x.m]);
+  const d1=months.map(x=>calcBlock1(x.m,x.y));
+  const d2=months.map(x=>calcBlock2(x.m,x.y));
+  const d3=months.map(x=>calcBlock3(x.m,x.y));
+  const d4=months.map(x=>{const mm2=getMMRow(x.m,x.y,manShop);return calcBlock4fromMM(mm2)||0;});
+  const chartsEl=document.getElementById('man-charts');
+  if(chartsEl)chartsEl.innerHTML=`
+    <div class="chart-box"><div class="chart-box-title">Quality (B1)</div>${svgLineChart(d1,labels,'var(--gold)',10000,' ฿')}</div>
+    <div class="chart-box"><div class="chart-box-title">Discipline (B2)</div>${svgLineChart(d2,labels,'var(--green)',2000,' ฿')}</div>
+    <div class="chart-box"><div class="chart-box-title">Admins (B3)</div>${svgLineChart(d3,labels,'var(--orange)',4000,' ฿')}</div>
+    <div class="chart-box"><div class="chart-box-title">Staff (B4)</div>${svgLineChart(d4,labels,'var(--gray)',4000,' ฿')}</div>`;
+}
+window.renderMgrAnalytics=renderMgrAnalytics;
+
+// ══════════════════════════════════════════
+// CEO PANEL
+// ══════════════════════════════════════════
+function switchCEOTab(tab,el){
+  document.querySelectorAll('.ceo-stab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.ceo-page').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById('ceo-'+tab).classList.add('active');
+  if(tab==='history')renderCEOHistory();
+}
+window.switchCEOTab=switchCEOTab;
+
+function switchCEOShop(shop){
+  ceoShop=shop;
+  document.getElementById('ceo-shop-bot').className='shop-tab-btn'+(shop==='bot'?' active':'');
+  document.getElementById('ceo-shop-chalong').className='shop-tab-btn'+(shop==='chalong'?' active':'');
+  loadCEOEvalState();renderCEOEval();
+}
+window.switchCEOShop=switchCEOShop;
+
+function changeCEOMonth(d){ceoMonth+=d;if(ceoMonth>11){ceoMonth=0;ceoYear++;}if(ceoMonth<0){ceoMonth=11;ceoYear--;}loadCEOEvalState();renderCEOEval();}
+window.changeCEOMonth=changeCEOMonth;
+
+function loadCEOEvalState(){
+  const mm=getMMRow(ceoMonth,ceoYear,ceoShop);
+  if(mm){
+    ceoEvalData={
+      staffFull:mm.staff_full!==false,
+      retentionOk:mm.retention_ok!==false,
+      newbieSuccess:mm.newbie_success!==false,
+      honestyNotes:JSON.parse(typeof mm.honesty_notes==='string'?mm.honesty_notes:JSON.stringify(mm.honesty_notes||[]))
+    };
+  }else{
+    ceoEvalData={staffFull:true,retentionOk:true,newbieSuccess:true,honestyNotes:[]};
+  }
+}
+
+function renderCEOEval(){
+  const lbl=document.getElementById('ceo-month-lbl');if(lbl)lbl.textContent=`${MS[ceoMonth]} ${ceoYear}`;
+  // Toggles
+  const toggleDefs=[
+    {key:'staffFull',label:'Укомплектованность штата'},
+    {key:'retentionOk',label:'Удержание сотрудников (нет увольнений)'},
+    {key:'newbieSuccess',label:'Успешный новый сотрудник'},
+  ];
+  const tEl=document.getElementById('ceo-toggles');
+  if(tEl)tEl.innerHTML=toggleDefs.map(t=>`
+    <div class="toggle3-row">
+      <div class="toggle3-label">${t.label}</div>
+      <div class="toggle3-val">${ceoEvalData[t.key]?'1 333':'0'} ฿</div>
+      <div class="toggle3-btns">
+        <button class="toggle3-btn${ceoEvalData[t.key]?' sel-yes':''}" onclick="setCEOToggle('${t.key}',true)">Да</button>
+        <button class="toggle3-btn${!ceoEvalData[t.key]?' sel-no':''}" onclick="setCEOToggle('${t.key}',false)">Нет</button>
+      </div>
+    </div>`).join('');
+  updateCEOBlock4Preview();
+  // Honesty
+  const hasNotes=ceoEvalData.honestyNotes.length>0;
+  const honestyEl=document.getElementById('ceo-honesty-flag');
+  if(honestyEl)honestyEl.className='honesty-flag'+(hasNotes?' flag-half':'');
+  const kEl=document.getElementById('ceo-k-val');
+  if(kEl){kEl.textContent=hasNotes?'0.5':'1.0';kEl.className='honesty-k '+(hasNotes?'bad':'ok');}
+  const descEl=document.getElementById('ceo-k-desc');
+  if(descEl)descEl.textContent=hasNotes?`${ceoEvalData.honestyNotes.length} замечание(й)`:' Замечаний нет';
+  const notesList=document.getElementById('ceo-notes-list');
+  if(notesList)notesList.innerHTML=ceoEvalData.honestyNotes.map((n,i)=>`
+    <div class="note-item">
+      <div class="note-date">${n.date}</div>
+      <div class="note-text">${n.text}</div>
+      <button class="note-del" onclick="removeHonestyNote(${i})">✕</button>
+    </div>`).join('');
+  // Auto blocks
+  const b1=calcBlock1(ceoMonth,ceoYear),b2=calcBlock2(ceoMonth,ceoYear),b3=calcBlock3(ceoMonth,ceoYear);
+  const abEl=document.getElementById('ceo-auto-blocks');
+  if(abEl)abEl.innerHTML=[
+    {t:'Качество (B1)',v:b1,max:10000},{t:'Дисциплина (B2)',v:b2,max:2000},{t:'Админы (B3)',v:b3,max:4000}
+  ].map(b=>`<div class="block-card" style="padding:12px 14px;">
+    <div class="block-card-title" style="font-size:9px;">${b.t}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);line-height:1;">${b.v.toLocaleString()}</div>
+    <div class="block-card-unit">฿</div>
+  </div>`).join('');
+  updateCEOTotalPreview();
+}
+window.renderCEOEval=renderCEOEval;
+
+function setCEOToggle(key,val){ceoEvalData[key]=val;renderCEOEval();}
+window.setCEOToggle=setCEOToggle;
+
+function updateCEOBlock4Preview(){
+  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const el=document.getElementById('ceo-block4-preview');if(el)el.textContent=b4.toLocaleString()+' ฿';
+}
+function updateCEOTotalPreview(){
+  const b1=calcBlock1(ceoMonth,ceoYear),b2=calcBlock2(ceoMonth,ceoYear),b3=calcBlock3(ceoMonth,ceoYear);
+  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const k=ceoEvalData.honestyNotes.length>0?0.5:1.0;
+  const variable=b1+b2+b3+b4,total=Math.round(30000+variable*k);
+  const el=document.getElementById('ceo-total-preview');
+  if(el)el.innerHTML=`
+    <div><div class="total-label">Итоговая зарплата управляющего</div>
+      <div class="total-formula">30,000 + ${variable.toLocaleString()} × ${k} = ${total.toLocaleString()} ฿</div>
+    </div>
+    <div style="text-align:right;"><div class="total-value">${total.toLocaleString()}</div><div class="total-unit">฿</div></div>`;
+}
+
+function addHonestyNote(){
+  const text=prompt('Описание замечания:');if(!text||!text.trim())return;
+  const date=new Date().toISOString().split('T')[0];
+  ceoEvalData.honestyNotes.push({date,text:text.trim()});
+  renderCEOEval();
+}
+window.addHonestyNote=addHonestyNote;
+
+function removeHonestyNote(i){
+  ceoEvalData.honestyNotes.splice(i,1);renderCEOEval();
+}
+window.removeHonestyNote=removeHonestyNote;
+
+async function saveCEOEval(){
+  const b1=calcBlock1(ceoMonth,ceoYear),b2=calcBlock2(ceoMonth,ceoYear),b3=calcBlock3(ceoMonth,ceoYear);
+  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const k=ceoEvalData.honestyNotes.length>0?0.5:1.0;
+  const variable=b1+b2+b3+b4,total=Math.round(30000+variable*k);
+  const payload={
+    month:ceoMonth+1,year:ceoYear,shop:ceoShop,
+    staff_full:ceoEvalData.staffFull,retention_ok:ceoEvalData.retentionOk,newbie_success:ceoEvalData.newbieSuccess,
+    honesty_flag:k,honesty_notes:JSON.stringify(ceoEvalData.honestyNotes),
+    block1:b1,block2:b2,block3:b3,block4:b4,
+    total_variable:variable,total_salary:total,
+    updated_at:new Date().toISOString()
+  };
+  try{
+    const{data}=await supabase.from('manager_monthly').upsert(payload,{onConflict:'month,year,shop'}).select().single();
+    if(data){
+      const idx=QC_STATE.managerMonthly.findIndex(m=>m.month===data.month&&m.year===data.year&&m.shop===data.shop);
+      if(idx>=0)QC_STATE.managerMonthly[idx]=data;else QC_STATE.managerMonthly.push(data);
+    }
+    const st=document.getElementById('ceo-save-status');
+    if(st){st.textContent='✓ Сохранено';setTimeout(()=>st.textContent='',3000);}
+    showToast();
+  }catch(e){console.error(e);alert('Save failed: '+e.message);}
+}
+window.saveCEOEval=saveCEOEval;
+
+function renderCEOHistory(){
+  const tbody=document.getElementById('ceo-history-body');if(!tbody)return;
+  const rows=[...QC_STATE.managerMonthly].sort((a,b)=>b.year-a.year||b.month-a.month);
+  if(!rows.length){tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--gray);padding:20px;font-family:'DM Mono',monospace;font-size:11px;">No records yet</td></tr>`;return;}
+  tbody.innerHTML=rows.map(r=>`<tr>
+    <td>${MS[(r.month||1)-1]} ${r.year}</td>
+    <td>${r.shop==='bot'?'Bot Ave':'Chalong'}</td>
+    <td class="val-gold">${(r.block1||0).toLocaleString()}</td>
+    <td class="val-gold">${(r.block2||0).toLocaleString()}</td>
+    <td class="val-gold">${(r.block3||0).toLocaleString()}</td>
+    <td class="val-gold">${(r.block4||0).toLocaleString()}</td>
+    <td style="color:${r.honesty_flag>=1?'var(--green)':'var(--red)'}">${r.honesty_flag}</td>
+    <td>${(r.total_variable||0).toLocaleString()} ฿</td>
+    <td class="val-total">${(r.total_salary||0).toLocaleString()}</td>
+  </tr>`).join('');
+}
+window.renderCEOHistory=renderCEOHistory;
+
+// Init CEO eval on page load
+function initCEOPage(){loadCEOEvalState();renderCEOEval();}
 
 loadFromSupabase();
 </script>
