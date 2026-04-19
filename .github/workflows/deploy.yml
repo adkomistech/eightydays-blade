@@ -14,5 +14,5 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{
-              "query": "mutation { serviceInstanceRedeploy(environmentId: \"d8159b5f-065f-40e3-b123-8a2b203b70a7\", serviceId: \"31626184-509a-4558-9d0b-1f3e72e53bb5\") }"
+              "query": "mutation { environmentTriggersDeploy(input: { environmentId: \"d8159b5f-065f-40e3-b123-8a2b203b70a7\", projectId: \"feb762f5-04f0-4c95-9c63-943bf58e2ad5\", serviceId: \"31626184-509a-4558-9d0b-1f3e72e53bb5\" }) }"
             }'
