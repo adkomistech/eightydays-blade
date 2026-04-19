@@ -659,16 +659,10 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 
   <!-- EVAL -->
   <div class="ceo-page active" id="ceo-eval">
-    <div style="display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
-      <div class="shop-tabs-bar" style="margin-bottom:0;border-bottom:none;gap:4px;">
-        <button class="shop-tab-btn active" id="ceo-shop-bot" onclick="switchCEOShop('bot')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Boat Avenue</button>
-        <button class="shop-tab-btn" id="ceo-shop-chalong" onclick="switchCEOShop('chalong')" style="border:1px solid var(--border);border-radius:5px;padding:7px 14px;margin-bottom:0;">Chalong</button>
-      </div>
-      <div class="month-nav" style="margin-bottom:0;">
-        <button class="mnav-btn" onclick="changeCEOMonth(-1)">&#8592;</button>
-        <div class="mnav-label" id="ceo-month-lbl"></div>
-        <button class="mnav-btn" onclick="changeCEOMonth(1)">&#8594;</button>
-      </div>
+    <div class="month-nav" style="margin-bottom:20px;">
+      <button class="mnav-btn" onclick="changeCEOMonth(-1)">&#8592;</button>
+      <div class="mnav-label" id="ceo-month-lbl"></div>
+      <button class="mnav-btn" onclick="changeCEOMonth(1)">&#8594;</button>
     </div>
 
     <div class="ceo-section">
@@ -680,18 +674,6 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
       </div>
     </div>
 
-    <div class="ceo-section">
-      <div class="ceo-section-title">Коэффициент честности</div>
-      <div class="honesty-flag" id="ceo-honesty-flag">
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;">K честности</div>
-          <div class="honesty-k ok" id="ceo-k-val">1.0</div>
-        </div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:var(--gray);" id="ceo-k-desc">Замечаний нет</div>
-        <button class="add-btn" onclick="addHonestyNote()" style="background:rgba(224,62,62,0.15);border:1px solid var(--red);color:var(--red);padding:7px 14px;font-size:9px;">+ Замечание</button>
-      </div>
-      <div class="note-list" id="ceo-notes-list"></div>
-    </div>
 
     <div class="ceo-section" style="background:rgba(201,168,76,0.04);border-color:var(--gold-dim);">
       <div class="ceo-section-title">Автоматические блоки (из данных BLADE)</div>
@@ -2342,7 +2324,7 @@ function loadCEOEvalState(){
 function renderCEOEval(){
   const lbl=document.getElementById('ceo-month-lbl');if(lbl)lbl.textContent=`${MS[ceoMonth]} ${ceoYear}`;
   // Toggles
-  const ss=staffSearchData[ceoShop]||{};
+  const ss=staffSearchData['company']||{};
   const tEl=document.getElementById('ceo-toggles');
   if(tEl){
     const elapsed=ss.startDate?Math.floor((new Date()-new Date(ss.startDate))/(86400000)):0;
@@ -2383,7 +2365,7 @@ function renderCEOEval(){
           <option value="50"  ${ps==='50' ?'selected':''}>Выполнен на 50% — 2 000 ฿</option>
           <option value="0"   ${ps==='0'  ?'selected':''}>Не выполнен — 0 ฿</option>
         </select>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:${ps==='100'?'var(--green)':ps==='50'?'var(--gold)':'var(--red)'};margin-top:10px;line-height:1;">${calcBlock4fromCountdown(ceoShop).toLocaleString()} ฿</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:${ps==='100'?'var(--green)':ps==='50'?'var(--gold)':'var(--red)'};margin-top:10px;line-height:1;">${calcBlock4fromCountdown('company').toLocaleString()} ฿</div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gray);margin-bottom:12px;">КОЭФФИЦИЕНТ ЧЕСТНОСТИ</div>
@@ -2451,29 +2433,29 @@ window.updateStaffNote=updateStaffNote;
 window.startStaffSearchCEO=function(){
   const inp=document.getElementById('staff-days-input');
   const ta=document.getElementById('staff-note-ta');
-  if(!staffSearchData[ceoShop])staffSearchData[ceoShop]={};
-  if(ta)staffSearchData[ceoShop].note=ta.value;
-  startStaffSearch(inp?.value,ceoShop);
+  if(!staffSearchData['company'])staffSearchData['company']={};
+  if(ta)staffSearchData['company'].note=ta.value;
+  startStaffSearch(inp?.value,'company');
 };
-window.clearStaffSearchCEO=function(){clearStaffSearch(ceoShop);};
+window.clearStaffSearchCEO=function(){clearStaffSearch('company');};
 window.setPlanStatusCEO=function(v){
-  if(!staffSearchData[ceoShop])staffSearchData[ceoShop]={};
-  staffSearchData[ceoShop].planStatus=v;
+  if(!staffSearchData['company'])staffSearchData['company']={};
+  staffSearchData['company'].planStatus=v;
   saveStaffSearch();renderCEOEval();
 };
-window.updateStaffNoteCEO=function(text){updateStaffNote(text,ceoShop);};
+window.updateStaffNoteCEO=function(text){updateStaffNote(text,'company');};
 window.approveStaffPlanCEO=function(){
-  if(!staffSearchData[ceoShop])staffSearchData[ceoShop]={};
+  if(!staffSearchData['company'])staffSearchData['company']={};
   const ta=document.getElementById('staff-note-ta');
-  if(ta)staffSearchData[ceoShop].note=ta.value;
+  if(ta)staffSearchData['company'].note=ta.value;
   // If countdown not started yet — start it now using the days input
-  if(!staffSearchData[ceoShop].startDate){
+  if(!staffSearchData['company'].startDate){
     const inp=document.getElementById('staff-days-input');
     const d=parseInt(inp?.value);
     if(!d||d<1){alert('Укажите количество дней');return;}
-    staffSearchData[ceoShop].startDate=new Date().toISOString().split('T')[0];
-    staffSearchData[ceoShop].totalDays=d;
-    staffSearchData[ceoShop].halfDone=false;
+    staffSearchData['company'].startDate=new Date().toISOString().split('T')[0];
+    staffSearchData['company'].totalDays=d;
+    staffSearchData['company'].halfDone=false;
   }
   saveStaffSearch();renderCEOEval();
   const st=document.getElementById('ceo-save-status');
@@ -2481,7 +2463,7 @@ window.approveStaffPlanCEO=function(){
 };
 
 function updateCEOBlock4Preview(){
-  const b4=calcBlock4fromCountdown(ceoShop);
+  const b4=calcBlock4fromCountdown('company');
   const el=document.getElementById('ceo-block4-preview');if(el)el.textContent=b4.toLocaleString()+' ฿';
 }
 function updateCEOTotalPreview(){
