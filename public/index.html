@@ -1917,31 +1917,31 @@ function buildQCForm(){
   html+=`</div>`;
   html+=`<div class="fr"><label class="flbl">Client type</label>
     <div class="tg">
-      <button class="tgb${QC_FORM.client_type==='unknown'?' sel-red':''}" onclick="setQCCT('unknown')">Unknown</button>
-      <button class="tgb${QC_FORM.client_type==='local'?' sel-gold':''}" onclick="setQCCT('local')">Local</button>
-      <button class="tgb${QC_FORM.client_type==='winter'?' sel-gold':''}" onclick="setQCCT('winter')">Winter</button>
-      <button class="tgb${QC_FORM.client_type==='travel'?' sel-gray':''}" onclick="setQCCT('travel')">Travel</button>
+      <button id="qct_unknown" class="tgb${QC_FORM.client_type==='unknown'?' sel-red':''}" onclick="setQCCT('unknown')">Unknown</button>
+      <button id="qct_local"   class="tgb${QC_FORM.client_type==='local'?' sel-gold':''}" onclick="setQCCT('local')">Local</button>
+      <button id="qct_winter"  class="tgb${QC_FORM.client_type==='winter'?' sel-gold':''}" onclick="setQCCT('winter')">Winter</button>
+      <button id="qct_travel"  class="tgb${QC_FORM.client_type==='travel'?' sel-gray':''}" onclick="setQCCT('travel')">Travel</button>
     </div>
   </div>
   <div class="fr"><label class="flbl">New client?</label>
     <div class="tg">
-      <button class="tgb${QC_FORM.is_new_client?' sel-gold':''}" onclick="setQCIN(true)">New</button>
-      <button class="tgb${!QC_FORM.is_new_client?' sel-gray':''}" onclick="setQCIN(false)">Regular</button>
+      <button id="qcin_yes" class="tgb${QC_FORM.is_new_client?' sel-gold':''}" onclick="setQCIN(true)">New</button>
+      <button id="qcin_no"  class="tgb${!QC_FORM.is_new_client?' sel-gray':''}" onclick="setQCIN(false)">Regular</button>
     </div>
   </div>
   <div class="fr2">
     <div class="fr"><label class="flbl">Haircut</label>
       <div class="tg">
-        <button class="tgb${QC_FORM.haircut==='none'?' sel-gray':''}" onclick="setQCHC('none')">None</button>
-        <button class="tgb${QC_FORM.haircut==='premium'?' sel-gold':''}" onclick="setQCHC('premium')">Premium</button>
-        <button class="tgb${QC_FORM.haircut==='royal'?' sel-gold':''}" onclick="setQCHC('royal')">Royal</button>
+        <button id="qchc_none"    class="tgb${QC_FORM.haircut==='none'?' sel-gray':''}" onclick="setQCHC('none')">None</button>
+        <button id="qchc_premium" class="tgb${QC_FORM.haircut==='premium'?' sel-gold':''}" onclick="setQCHC('premium')">Premium</button>
+        <button id="qchc_royal"   class="tgb${QC_FORM.haircut==='royal'?' sel-gold':''}" onclick="setQCHC('royal')">Royal</button>
       </div>
     </div>
     <div class="fr"><label class="flbl">Beard</label>
       <div class="tg">
-        <button class="tgb${QC_FORM.beard==='none'?' sel-gray':''}" onclick="setQCBD('none')">None</button>
-        <button class="tgb${QC_FORM.beard==='premium'?' sel-gold':''}" onclick="setQCBD('premium')">Premium</button>
-        <button class="tgb${QC_FORM.beard==='royal'?' sel-gold':''}" onclick="setQCBD('royal')">Royal</button>
+        <button id="qcbd_none"    class="tgb${QC_FORM.beard==='none'?' sel-gray':''}" onclick="setQCBD('none')">None</button>
+        <button id="qcbd_premium" class="tgb${QC_FORM.beard==='premium'?' sel-gold':''}" onclick="setQCBD('premium')">Premium</button>
+        <button id="qcbd_royal"   class="tgb${QC_FORM.beard==='royal'?' sel-gold':''}" onclick="setQCBD('royal')">Royal</button>
       </div>
     </div>
   </div>
@@ -1966,11 +1966,41 @@ function buildQCForm(){
 }
 window.buildQCForm=buildQCForm;
 
-// QC form toggles
-function setQCCT(v){QC_FORM.client_type=v;buildQCForm();}
-function setQCIN(v){QC_FORM.is_new_client=v;buildQCForm();}
-function setQCHC(v){QC_FORM.haircut=v;buildQCForm();}
-function setQCBD(v){QC_FORM.beard=v;buildQCForm();}
+// QC form toggles — only update button CSS + rebuild checklist (never rebuilds full form → barber stays selected)
+function setQCCT(v){
+  QC_FORM.client_type=v;
+  ['unknown','local','winter','travel'].forEach(x=>{
+    const b=document.getElementById('qct_'+x);if(!b)return;
+    b.className='tgb';
+    if(x===v)b.classList.add(v==='unknown'?'sel-red':v==='travel'?'sel-gray':'sel-gold');
+  });
+  buildQCChecklist();
+}
+function setQCIN(v){
+  QC_FORM.is_new_client=v;
+  const y=document.getElementById('qcin_yes'),n=document.getElementById('qcin_no');
+  if(y){y.className='tgb';if(v)y.classList.add('sel-gold');}
+  if(n){n.className='tgb';if(!v)n.classList.add('sel-gray');}
+  buildQCChecklist();
+}
+function setQCHC(v){
+  QC_FORM.haircut=v;
+  ['none','premium','royal'].forEach(x=>{
+    const b=document.getElementById('qchc_'+x);if(!b)return;
+    b.className='tgb';
+    if(x===v)b.classList.add(v==='none'?'sel-gray':'sel-gold');
+  });
+  buildQCChecklist();
+}
+function setQCBD(v){
+  QC_FORM.beard=v;
+  ['none','premium','royal'].forEach(x=>{
+    const b=document.getElementById('qcbd_'+x);if(!b)return;
+    b.className='tgb';
+    if(x===v)b.classList.add(v==='none'?'sel-gray':'sel-gold');
+  });
+  buildQCChecklist();
+}
 window.setQCCT=setQCCT;window.setQCIN=setQCIN;window.setQCHC=setQCHC;window.setQCBD=setQCBD;
 
 function toggleQCCheck(key){
@@ -2316,7 +2346,6 @@ function renderCEOEval(){
         <div style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);">Дней на поиск:</div>
         <input id="staff-days-input" type="number" min="1" max="365" value="${ss.totalDays||''}" placeholder="30"
           style="width:70px;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:6px 10px;border-radius:4px;font-family:'DM Mono',monospace;font-size:13px;">
-        <button onclick="startStaffSearchCEO()" style="background:var(--gold);color:#000;border:none;padding:6px 16px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;font-weight:500;">СТАРТ</button>
         ${ss.startDate?`<button onclick="clearStaffSearchCEO()" style="background:transparent;border:1px solid var(--border);color:var(--gray);padding:6px 12px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;">Сброс</button>`:''}
       </div>
       ${ss.startDate&&rem!==null?`
