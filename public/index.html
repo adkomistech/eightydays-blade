@@ -675,7 +675,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
       <div class="ceo-section-title">ШТАТ (макс 4 000 ฿)</div>
       <div class="toggle3" id="ceo-toggles"></div>
       <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:4px;">
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">Блок 4: </div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">Штат: </div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-left:10px;" id="ceo-block4-preview">0 ฿</div>
       </div>
     </div>
@@ -2066,7 +2066,13 @@ function buildQCChecklist(){
 window.buildQCChecklist=buildQCChecklist;
 
 async function saveQCReport(){
-  if(!QC_FORM.staff_id&&!QC_FORM.staff_name){alert('Select a barber');return;}
+  // Sync barber select → QC_FORM (defence against any state/DOM desync)
+  const _qcSel=document.querySelector('#qc-modal-body select.fsel');
+  if(_qcSel&&_qcSel.value){
+    QC_FORM.staff_name=_qcSel.value;
+    QC_FORM.staff_id=STATE.staff.find(s=>s.name===_qcSel.value)?.id||null;
+  }
+  if(!QC_FORM.staff_id&&!QC_FORM.staff_name){alert('Выберите барбера');return;}
   const{ok,t}=calcQCScore(QC_FORM);
   const payload={
     shop:QC_FORM.shop||QC_STATE.shop,
@@ -2143,8 +2149,10 @@ function calcBlock2(month,year){
   },0));
 }
 function calcBlock3(month,year){
-  // 4000฿ split equally per admin. 3 weighted metrics:
-  // CRM violations: 50%, Schedule (absences≥6 cascade): 30%, Admin regs: 20%
+  // 4000฿ split equally per admin. Per admin (share=2000฿):
+  // CRM violations: 50% = 1000฿
+  // Remaining 1000฿: Schedule/punctuality 70% = 700฿ (35% of share), Regs 30% = 300฿ (15% of share)
+  // Weights: CRM 50%, Schedule 35%, Admin regs 15%
   const key=pk(month,year);
   const admins=STATE.staff.filter(s=>s.role==='admin');
   if(!admins.length)return 0;
@@ -2155,7 +2163,7 @@ function calcBlock3(month,year){
     const crmOk=(d.crm||0)<6;
     const schedOk=abs<6&&(d.schedule||0)<6; // absences≥6 cascades to schedule fail
     const regOk=(d.admin||0)<6;
-    const score=0.5*(crmOk?1:0)+0.3*(schedOk?1:0)+0.2*(regOk?1:0);
+    const score=0.5*(crmOk?1:0)+0.35*(schedOk?1:0)+0.15*(regOk?1:0);
     return sum+share*score;
   },0));
 }
@@ -2415,8 +2423,18 @@ window.setPlanStatusCEO=function(v){
 };
 window.updateStaffNoteCEO=function(text){updateStaffNote(text,ceoShop);};
 window.approveStaffPlanCEO=function(){
+  if(!staffSearchData[ceoShop])staffSearchData[ceoShop]={};
   const ta=document.getElementById('staff-note-ta');
-  if(ta&&staffSearchData[ceoShop])staffSearchData[ceoShop].note=ta.value;
+  if(ta)staffSearchData[ceoShop].note=ta.value;
+  // If countdown not started yet — start it now using the days input
+  if(!staffSearchData[ceoShop].startDate){
+    const inp=document.getElementById('staff-days-input');
+    const d=parseInt(inp?.value);
+    if(!d||d<1){alert('Укажите количество дней');return;}
+    staffSearchData[ceoShop].startDate=new Date().toISOString().split('T')[0];
+    staffSearchData[ceoShop].totalDays=d;
+    staffSearchData[ceoShop].halfDone=false;
+  }
   saveStaffSearch();renderCEOEval();
   const st=document.getElementById('ceo-save-status');
   if(st){st.textContent='✓ План утверждён';setTimeout(()=>st.textContent='',3000);}
