@@ -774,6 +774,7 @@ let QC_FORM = {};
 let manShop='bot', manMonth=new Date().getMonth(), manYear=new Date().getFullYear();
 let ceoShop='bot', ceoMonth=new Date().getMonth(), ceoYear=new Date().getFullYear();
 let ceoEvalData = {staffFull:true, retentionOk:true, newbieSuccess:true, honestyNotes:[]};
+let staffSearchData = {}; // { bot: {startDate:'2026-04-19', totalDays:30, halfDone:false, note:''}, chalong: {...} }
 let newStaffRole2='barber', newStaffShop='bot';
 let BARBERS = [], ADMINS = [];
 let anBarberSel = '', anAdminSel = '';
@@ -1655,6 +1656,8 @@ async function loadPins(){
     }
     const {data:qcuData} = await supabase.from('settings').select('value').eq('key','qc_users').single();
     if(qcuData) QC_STATE.qcUsers = JSON.parse(qcuData.value)||[];
+    const {data:ssData} = await supabase.from('settings').select('value').eq('key','staff_search').single();
+    if(ssData) staffSearchData = JSON.parse(ssData.value)||{};
   }catch(e){console.error('PIN load error',e);}
 }
 
@@ -1672,6 +1675,10 @@ async function saveCEOPin(){
 async function saveQCUsersDB(){
   await supabase.from('settings').upsert({key:'qc_users',value:JSON.stringify(QC_STATE.qcUsers),updated_at:new Date().toISOString()},{onConflict:'key'});
 }
+async function saveStaffSearch(){
+  await supabase.from('settings').upsert({key:'staff_search',value:JSON.stringify(staffSearchData),updated_at:new Date().toISOString()},{onConflict:'key'});
+}
+window.saveStaffSearch=saveStaffSearch;
 
 function renderQCUsersList(){
   const el=document.getElementById('qc-users-list');
@@ -1735,7 +1742,7 @@ async function setStaffShop(idx,shop){
   STATE.staff[idx].shop=shop;
   const s=STATE.staff[idx];
   if(s.id){await supabase.from('staff').update({shop}).eq('id',s.id);}
-  renderShopAssignList();
+  renderStaffList();
 }
 function setNewRole2(role){
   newStaffRole2=role;
@@ -1958,6 +1965,9 @@ function buildQCForm(){
   if(isMgr) html+=`<button class="btn-gold" onclick="saveMgrQCComment()">Save Comment</button>`;
   html+=`<button class="btn-ghost" onclick="closeQCModal()">Close</button></div>`;
   document.getElementById('qc-modal-body').innerHTML=html;
+  // Force-restore barber select after innerHTML rebuild
+  const _bbsel=document.querySelector('#qc-modal-body select.fsel');
+  if(_bbsel&&QC_FORM.staff_id)_bbsel.value=QC_FORM.staff_id;
   buildQCChecklist();
 }
 window.buildQCForm=buildQCForm;
@@ -2126,30 +2136,34 @@ function calcBlock1(month,year){
   return Math.round(10000*(1-0.20*N/T));
 }
 function calcBlock2(month,year){
+  // 2000฿ split equally per barber. Binary: barber passes or fails entirely.
+  // Fail if: absences≥6 OR punctuality≥6 OR dresscode≥6
   const key=pk(month,year);
   const barbers=STATE.staff.filter(s=>s.role==='barber');
-  const admins=STATE.staff.filter(s=>s.role==='admin');
   if(!barbers.length)return 0;
-  const avg=barbers.reduce((s,b)=>{
+  const share=2000/barbers.length;
+  return Math.round(barbers.reduce((sum,b)=>{
     const d=STATE.barbers[key]?.[b.name]||{};
-    return s+0.33*((d.punctuality||0)<6?1:0)+0.33*((d.dresscode||0)<6?1:0)+0.34*((d.absences||0)<6?1:0);
-  },0)/barbers.length;
-  const totalAdminAbs=admins.reduce((s,a)=>{
-    const d=STATE.admins[key]?.[a.name]||{};
-    return s+(d.absences||0);
-  },0);
-  const adminPenalty=Math.min(totalAdminAbs*285,2000);
-  return Math.max(0,Math.round(2000*Math.sqrt(avg))-adminPenalty);
+    if((d.absences||0)>=6||(d.punctuality||0)>=6||(d.dresscode||0)>=6)return sum;
+    return sum+share;
+  },0));
 }
 function calcBlock3(month,year){
+  // 4000฿ split equally per admin. 3 weighted metrics:
+  // CRM violations: 50%, Schedule (absences≥6 cascade): 30%, Admin regs: 20%
   const key=pk(month,year);
   const admins=STATE.staff.filter(s=>s.role==='admin');
   if(!admins.length)return 0;
-  const avg=admins.reduce((s,a)=>{
+  const share=4000/admins.length;
+  return Math.round(admins.reduce((sum,a)=>{
     const d=STATE.admins[key]?.[a.name]||{};
-    return s+calcAdminBonus(d).total/7000;
-  },0)/admins.length;
-  return Math.round(4000*Math.sqrt(Math.min(avg,1)));
+    const abs=d.absences||0;
+    const crmOk=(d.crm||0)<6;
+    const schedOk=abs<6&&(d.schedule||0)<6; // absences≥6 cascades to schedule fail
+    const regOk=(d.admin||0)<6;
+    const score=0.5*(crmOk?1:0)+0.3*(schedOk?1:0)+0.2*(regOk?1:0);
+    return sum+share*score;
+  },0));
 }
 function getMMRow(month,year,shop){
   return QC_STATE.managerMonthly.find(m=>m.month===month+1&&m.year===year&&m.shop===shop)||null;
@@ -2157,6 +2171,23 @@ function getMMRow(month,year,shop){
 function calcBlock4fromMM(mm){
   if(!mm)return 4000;
   return (mm.staff_full?1333:0)+(mm.retention_ok?1333:0)+(mm.newbie_success?1334:0);
+}
+function calcBlock4fromCountdown(shop){
+  const s=staffSearchData[shop||'bot'];
+  if(!s||!s.startDate||!s.totalDays) return 4000;
+  const elapsed=Math.floor((new Date()-new Date(s.startDate))/(86400000));
+  const rem=s.totalDays-elapsed;
+  if(rem<=0) return s.halfDone?2000:0;
+  return 4000;
+}
+function getCountdownDesc(shop){
+  const s=staffSearchData[shop||'bot'];
+  if(!s||!s.startDate||!s.totalDays) return 'No search task set';
+  const elapsed=Math.floor((new Date()-new Date(s.startDate))/(86400000));
+  const rem=s.totalDays-elapsed;
+  if(rem<=0) return s.halfDone?'Half-done → 2 000 ฿':'Expired → bonus lost';
+  const clr=rem>=20?'🟢':rem>=10?'🟡':'🔴';
+  return `${clr} ${rem} days left`;
 }
 
 function switchManShop(shop){
@@ -2173,7 +2204,7 @@ function renderMgrAnalytics(){
   const lbl=document.getElementById('man-month-lbl');if(lbl)lbl.textContent=`${MS[manMonth]} ${manYear}`;
   const b1=calcBlock1(manMonth,manYear),b2=calcBlock2(manMonth,manYear),b3=calcBlock3(manMonth,manYear);
   const mm=getMMRow(manMonth,manYear,manShop);
-  const b4raw=calcBlock4fromMM(mm);const b4=b4raw!==null?b4raw:0;
+  const b4=calcBlock4fromCountdown(manShop);
   const k=mm?mm.honesty_flag:1.0;
   const variable=b1+b2+b3+b4;
   const total=Math.round(30000+variable*k);
@@ -2182,7 +2213,7 @@ function renderMgrAnalytics(){
     {title:'Quality',max:10000,val:b1,desc:'Standards violations'},
     {title:'Discipline',max:2000,val:b2,desc:'Punct + Dresscode'},
     {title:'Admins',max:4000,val:b3,desc:'Admin KPI bonus'},
-    {title:'Staff',max:4000,val:b4!==null?b4:0,desc:b4raw!==null?'Set by CEO':'Not set yet'},
+    {title:'Staff',max:4000,val:b4,desc:getCountdownDesc(manShop)},
   ];
   const blocksEl=document.getElementById('man-blocks');
   if(blocksEl)blocksEl.innerHTML=blockDefs.map(b=>{
@@ -2215,7 +2246,7 @@ function renderMgrAnalytics(){
   const d1=months.map(x=>calcBlock1(x.m,x.y));
   const d2=months.map(x=>calcBlock2(x.m,x.y));
   const d3=months.map(x=>calcBlock3(x.m,x.y));
-  const d4=months.map(x=>{const mm2=getMMRow(x.m,x.y,manShop);return calcBlock4fromMM(mm2)||0;});
+  const d4=months.map(()=>calcBlock4fromCountdown(manShop));
   const chartsEl=document.getElementById('man-charts');
   if(chartsEl)chartsEl.innerHTML=`
     <div class="chart-box"><div class="chart-box-title">Quality (B1)</div>${svgLineChart(d1,labels,'var(--gold)',10000,' ฿')}</div>
@@ -2265,21 +2296,47 @@ function loadCEOEvalState(){
 function renderCEOEval(){
   const lbl=document.getElementById('ceo-month-lbl');if(lbl)lbl.textContent=`${MS[ceoMonth]} ${ceoYear}`;
   // Toggles
-  const toggleDefs=[
-    {key:'staffFull',label:'Укомплектованность штата'},
-    {key:'retentionOk',label:'Удержание сотрудников (нет увольнений)'},
-    {key:'newbieSuccess',label:'Успешный новый сотрудник'},
-  ];
+  const ss=staffSearchData[ceoShop]||{};
   const tEl=document.getElementById('ceo-toggles');
-  if(tEl)tEl.innerHTML=toggleDefs.map(t=>`
-    <div class="toggle3-row">
-      <div class="toggle3-label">${t.label}</div>
-      <div class="toggle3-val">${ceoEvalData[t.key]?'1 333':'0'} ฿</div>
-      <div class="toggle3-btns">
-        <button class="toggle3-btn${ceoEvalData[t.key]?' sel-yes':''}" onclick="setCEOToggle('${t.key}',true)">Да</button>
-        <button class="toggle3-btn${!ceoEvalData[t.key]?' sel-no':''}" onclick="setCEOToggle('${t.key}',false)">Нет</button>
+  if(tEl){
+    const elapsed=ss.startDate?Math.floor((new Date()-new Date(ss.startDate))/(86400000)):0;
+    const rem=ss.totalDays?(ss.totalDays-elapsed):null;
+    const clr=rem===null?'var(--gray)':rem>=20?'var(--green)':rem>=10?'var(--gold)':'var(--red)';
+    const b4val=calcBlock4fromCountdown(ceoShop);
+    tEl.innerHTML=`
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gray);margin-bottom:10px;">ЗАДАЧА ПО ПОИСКУ СОТРУДНИКА</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+        <div style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);">Дней на поиск:</div>
+        <input type="number" min="1" max="365" value="${ss.totalDays||''}" placeholder="напр. 30"
+          style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:6px 10px;border-radius:4px;font-family:'DM Mono',monospace;font-size:13px;"
+          onchange="startStaffSearch(this.value,ceoShop)">
+        <button onclick="startStaffSearch(document.querySelector('#ceo-toggles input[type=number]').value,ceoShop)" style="background:var(--gold);color:#000;border:none;padding:6px 14px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;">СТАРТ</button>
+        ${ss.startDate?`<button onclick="clearStaffSearch(ceoShop)" style="background:transparent;border:1px solid var(--border);color:var(--gray);padding:6px 12px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;">Сбросить</button>`:''}
       </div>
-    </div>`).join('');
+      ${ss.startDate&&rem!==null?`
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:${clr};line-height:1;">${Math.max(0,rem)}</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">ДНЕЙ ОСТАЛОСЬ</div>
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">из ${ss.totalDays} · начало ${ss.startDate}</div>
+        </div>
+        <div style="margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:36px;color:${clr};">${b4val.toLocaleString()} ฿</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:4px;height:8px;overflow:hidden;margin-bottom:12px;">
+        <div style="height:100%;background:${clr};width:${Math.max(0,Math.min(100,rem/ss.totalDays*100))}%;transition:width .5s;"></div>
+      </div>
+      ${rem<=0?`<div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+        <div style="font-family:'DM Sans',monospace;font-size:14px;color:var(--white);">Выполнено наполовину (2000฿):</div>
+        <button class="toggle3-btn${ss.halfDone?' sel-yes':''}" onclick="setStaffHalfDone(true,ceoShop)">Да</button>
+        <button class="toggle3-btn${!ss.halfDone?' sel-no':''}" onclick="setStaffHalfDone(false,ceoShop)">Нет</button>
+      </div>`:''}
+      `:'<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gray);">Задача не поставлена — бонус 4 000 ฿</div>'}
+      <div style="margin-top:10px;">
+        <textarea placeholder="Комментарий к задаче..." style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:8px 10px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;resize:vertical;min-height:60px;" onchange="updateStaffNote(this.value,ceoShop)">${ss.note||''}</textarea>
+      </div>
+    </div>`;
+  }
   updateCEOBlock4Preview();
   // Honesty
   const hasNotes=ceoEvalData.honestyNotes.length>0;
@@ -2313,13 +2370,45 @@ window.renderCEOEval=renderCEOEval;
 function setCEOToggle(key,val){ceoEvalData[key]=val;renderCEOEval();}
 window.setCEOToggle=setCEOToggle;
 
+function startStaffSearch(days,shop){
+  const d=parseInt(days);
+  if(!d||d<1) return;
+  if(!staffSearchData[shop]) staffSearchData[shop]={};
+  staffSearchData[shop].startDate=new Date().toISOString().split('T')[0];
+  staffSearchData[shop].totalDays=d;
+  staffSearchData[shop].halfDone=false;
+  saveStaffSearch();
+  renderCEOEval();
+}
+function clearStaffSearch(shop){
+  if(!confirm('Сбросить таймер поиска?')) return;
+  staffSearchData[shop]={};
+  saveStaffSearch();
+  renderCEOEval();
+}
+function setStaffHalfDone(val,shop){
+  if(!staffSearchData[shop]) staffSearchData[shop]={};
+  staffSearchData[shop].halfDone=val;
+  saveStaffSearch();
+  renderCEOEval();
+}
+function updateStaffNote(text,shop){
+  if(!staffSearchData[shop]) staffSearchData[shop]={};
+  staffSearchData[shop].note=text;
+  saveStaffSearch();
+}
+window.startStaffSearch=startStaffSearch;
+window.clearStaffSearch=clearStaffSearch;
+window.setStaffHalfDone=setStaffHalfDone;
+window.updateStaffNote=updateStaffNote;
+
 function updateCEOBlock4Preview(){
-  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const b4=calcBlock4fromCountdown(ceoShop);
   const el=document.getElementById('ceo-block4-preview');if(el)el.textContent=b4.toLocaleString()+' ฿';
 }
 function updateCEOTotalPreview(){
   const b1=calcBlock1(ceoMonth,ceoYear),b2=calcBlock2(ceoMonth,ceoYear),b3=calcBlock3(ceoMonth,ceoYear);
-  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const b4=calcBlock4fromCountdown(ceoShop);
   const k=ceoEvalData.honestyNotes.length>0?0.5:1.0;
   const variable=b1+b2+b3+b4,total=Math.round(30000+variable*k);
   const el=document.getElementById('ceo-total-preview');
@@ -2345,7 +2434,7 @@ window.removeHonestyNote=removeHonestyNote;
 
 async function saveCEOEval(){
   const b1=calcBlock1(ceoMonth,ceoYear),b2=calcBlock2(ceoMonth,ceoYear),b3=calcBlock3(ceoMonth,ceoYear);
-  const b4=(ceoEvalData.staffFull?1333:0)+(ceoEvalData.retentionOk?1333:0)+(ceoEvalData.newbieSuccess?1334:0);
+  const b4=calcBlock4fromCountdown(ceoShop);
   const k=ceoEvalData.honestyNotes.length>0?0.5:1.0;
   const variable=b1+b2+b3+b4,total=Math.round(30000+variable*k);
   const payload={
