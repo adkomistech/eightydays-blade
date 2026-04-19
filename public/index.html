@@ -1785,9 +1785,80 @@ function inQCWeek(dateStr,off){
   return d>=mon&&d<=sun;
 }
 function fmtDate(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'});}
+// Builds the canonical list of checklist sections+items from report data.
+// Used by both calcQCScore and buildQCChecklist so totals always match.
+function getChecklistSections(r){
+  const ct=r.client_type||'unknown',isNew=!!r.is_new_client,hc=r.haircut||'none',bd=r.beard||'none';
+  const sections=[];
+  // CRM
+  const crm=[];
+  crm.push({k:'crmCategory',lbl:'Категория клиента отмечена (Local/Winter/Travel)',crit:ct==='unknown'});
+  if(ct!=='travel')crm.push({k:'crmName',lbl:'Имя клиента'});
+  if(ct==='local'||ct==='winter'){crm.push({k:'crmPhone',lbl:'Телефон клиента'});crm.push({k:'crmPhoto',lbl:'Фото клиента'});crm.push({k:'crmHair360',lbl:'Стрижка 360° (фото результата)'});crm.push({k:'crmCoffee',lbl:'Предпочтение по кофе отмечено'});}
+  if(ct==='unknown'){crm.push({k:'crmPhoto',lbl:'Фото клиента'});crm.push({k:'crmHair360',lbl:'Стрижка 360° (фото результата)'});}
+  sections.push({title:'CRM — Altegio',items:crm});
+  // Камера — Администратор
+  const cam=[];
+  if(isNew)cam.push({k:'adminTricho',lbl:'Предложил трихоскоп (новый клиент)'});
+  cam.push({k:'adminDuration',lbl:'Сообщил длительность и стоимость'});
+  cam.push({k:'adminUpsell',lbl:'Предложил апсейл'});
+  cam.push({k:'adminCoffee',lbl:'Предложил кофе / чай'});
+  cam.push({k:'adminPayment',lbl:'Встал и рассчитал клиента'});
+  cam.push({k:'adminCosmetics',lbl:'Предложил косметику'});
+  cam.push({k:'adminNextBook',lbl:'Предложил запись на следующий раз'});
+  cam.push({k:'adminSamples',lbl:'Предложил пробники (при отказе от косметики)'});
+  sections.push({title:'Камера — Администратор',items:cam});
+  // Барбер
+  if(hc!=='none'){
+    sections.push({title:'Барбер — Гигиена',items:[{k:'barberGloves',lbl:'Чёрные перчатки надеты'},{k:'barberMask',lbl:'Маска надета'}]});
+    const proc=[];
+    if(hc==='premium'){
+      proc.push({k:'hairWash1',lbl:'1-я мойка головы'});proc.push({k:'barberShampooDemo',lbl:'Демонстрация шампуня на 1-й мойке'});
+      if(isNew)proc.push({k:'barberDiscussion',lbl:'Обсуждение стрижки + референсы'});
+      proc.push({k:'cleanerFloor',lbl:'Уборщик подмёл вокруг кресла'});proc.push({k:'hairWash2',lbl:'2-я мойка головы'});
+      proc.push({k:'barberStyleDemo',lbl:'Демонстрация стайлингового продукта'});proc.push({k:'barberAfterShave',lbl:'Бритьё шеи после стрижки'});
+      proc.push({k:'barberToolClean',lbl:'Инструменты в барбициде/санитайзере'});proc.push({k:'cleanerWash',lbl:'Уборщик продезинфицировал раковину'});
+      sections.push({title:'Барбер — Премиум Стрижка',items:proc});
+    }else if(hc==='royal'){
+      proc.push({k:'royalTricho',lbl:'Трихоскоп — состояние волос (до мойки)'});
+      proc.push({k:'hairWash1',lbl:'1-я мойка головы'});proc.push({k:'barberShampooDemo',lbl:'Демонстрация шампуня на 1-й мойке'});
+      proc.push({k:'royalScrub',lbl:'Скраб для головы (1-я мойка)'});proc.push({k:'royalMassager',lbl:'Массажёры для головы (1 мин)'});
+      if(isNew)proc.push({k:'barberDiscussion',lbl:'Обсуждение стрижки + референсы'});
+      proc.push({k:'cleanerFloor',lbl:'Уборщик подмёл вокруг кресла'});proc.push({k:'hairWash2',lbl:'2-я мойка головы'});
+      proc.push({k:'barberShampooDemo2',lbl:'Демонстрация шампуня на 2-й мойке'});proc.push({k:'royalShampoo2',lbl:'Шампунь от выпадения (2-я мойка)'});
+      proc.push({k:'royalMassager2',lbl:'Массажёры на 2-й мойке'});proc.push({k:'royalTonic',lbl:'Тоник от выпадения + вибромассажёр'});
+      proc.push({k:'barberStyleDemo',lbl:'Демонстрация стайлингового продукта'});proc.push({k:'barberAfterShave',lbl:'Бритьё шеи после стрижки'});
+      proc.push({k:'barberToolClean',lbl:'Инструменты в барбициде/санитайзере'});proc.push({k:'cleanerWash',lbl:'Уборщик продезинфицировал раковину'});
+      sections.push({title:'Барбер — Королевская Стрижка',items:proc});
+    }
+  }
+  if(bd!=='none'){
+    const bi=[];
+    if(bd==='premium'){
+      bi.push({k:'beardWash',lbl:'Мойка бороды (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Лавандовое масло на горячее полотенце'});
+      bi.push({k:'beardHotTowel',lbl:'Горячее полотенце (2 мин)'});bi.push({k:'beardSpongies',lbl:'Спонжи на глаза'});
+      bi.push({k:'beardPreshave',lbl:'Ментоловый пре-шейв'});bi.push({k:'beardMenthol',lbl:'Ментоловое масло на холодное полотенце'});
+      bi.push({k:'beardColdTowel',lbl:'Холодное полотенце (2 мин)'});bi.push({k:'beardAfter',lbl:'Нанесён афтершейв'});bi.push({k:'beardBalm',lbl:'Бальзам для бороды'});
+      sections.push({title:'Борода — Премиум',items:bi});
+    }else if(bd==='royal'){
+      bi.push({k:'beardWash',lbl:'Мойка бороды (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Лавандовое масло на горячее полотенце'});
+      bi.push({k:'beardHotTowel',lbl:'Горячее полотенце (2 мин)'});bi.push({k:'royalVibro1',lbl:'Вибромассажёры (горячий этап)'});
+      bi.push({k:'beardSpongies',lbl:'Спонжи на глаза'});bi.push({k:'beardPreshave',lbl:'Ментоловый пре-шейв'});
+      bi.push({k:'royalPatches',lbl:'Патчи под глаза'});bi.push({k:'beardMenthol',lbl:'Ментоловое масло на холодное полотенце'});
+      bi.push({k:'beardColdTowel',lbl:'Холодное полотенце (2 мин)'});bi.push({k:'royalVibro2',lbl:'Вибромассажёры (холодный этап)'});
+      bi.push({k:'detoxNeroli',lbl:'Нероли детокс масло'});bi.push({k:'detoxAmber',lbl:'Янтарный шампунь (пена)'});
+      bi.push({k:'detoxLilly',lbl:'Крем-бальзам Lilly'});bi.push({k:'beardAfter',lbl:'Нанесён афтершейв'});
+      sections.push({title:'Борода — Королевское бритьё',items:bi});
+    }
+  }
+  return sections;
+}
 function calcQCScore(r){
+  // Total = ALL items in checklist for given services (not just toggled ones)
+  const sections=getChecklistSections(r);
+  const ck=r.checks||{};
   let ok=0,t=0;
-  Object.values(r.checks||{}).forEach(v=>{if(typeof v==='boolean'){t++;if(v)ok++;}});
+  sections.forEach(s=>s.items.forEach(i=>{t++;if(ck[i.k]===true)ok++;}));
   return{ok,t};
 }
 function calcQCStatus(r){
@@ -1798,11 +1869,11 @@ function calcQCStatus(r){
 }
 function qcSvcLabel(r){
   const p=[];
-  if(r.haircut==='premium')p.push('Premium Cut');
-  if(r.haircut==='royal')p.push('Royal Cut');
-  if(r.beard==='premium')p.push('Premium Beard');
-  if(r.beard==='royal')p.push('Royal Shave');
-  return p.join(' + ')||'No services';
+  if(r.haircut==='premium')p.push('Премиум стрижка');
+  if(r.haircut==='royal')p.push('Королевская стрижка');
+  if(r.beard==='premium')p.push('Премиум борода');
+  if(r.beard==='royal')p.push('Королевское бритьё');
+  return p.join(' + ')||'Нет услуг';
 }
 
 // ══════════════════════════════════════════
@@ -2013,71 +2084,11 @@ window.toggleQCCheck=toggleQCCheck;
 
 function buildQCChecklist(){
   const area=document.getElementById('qc-check-area');if(!area)return;
-  const ct=QC_FORM.client_type||'unknown',isNew=QC_FORM.is_new_client,hc=QC_FORM.haircut||'none',bd=QC_FORM.beard||'none';
+  if((QC_FORM.haircut||'none')==='none'&&(QC_FORM.beard||'none')==='none'){
+    area.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;padding:10px 0;">Выберите услуги выше</div>';return;
+  }
+  const sections=getChecklistSections(QC_FORM);
   const ck=QC_FORM.checks||{};
-  if(hc==='none'&&bd==='none'){area.innerHTML='<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;padding:10px 0;">Select services above</div>';return;}
-  const sections=[];
-  // CRM
-  const crm=[];
-  crm.push({k:'crmCategory',lbl:'Client category marked (Local/Winter/Travel)',crit:ct==='unknown'});
-  if(ct!=='travel')crm.push({k:'crmName',lbl:'Client name'});
-  if(ct==='local'||ct==='winter'){crm.push({k:'crmPhone',lbl:'Client phone'});crm.push({k:'crmPhoto',lbl:'Client photo'});crm.push({k:'crmHair360',lbl:'360° haircut photo'});crm.push({k:'crmCoffee',lbl:'Coffee preference noted'});}
-  if(ct==='unknown'){crm.push({k:'crmPhoto',lbl:'Client photo'});crm.push({k:'crmHair360',lbl:'360° haircut photo'});}
-  sections.push({title:'CRM — Altegio',items:crm});
-  // Admin camera
-  const cam=[];
-  if(isNew)cam.push({k:'adminTricho',lbl:'Offered trichoscope (new client)'});
-  cam.push({k:'adminDuration',lbl:'Informed about duration and price'});
-  cam.push({k:'adminUpsell',lbl:'Offered upsell'});
-  cam.push({k:'adminCoffee',lbl:'Offered coffee/tea'});
-  cam.push({k:'adminPayment',lbl:'Stood up and cashed out client'});
-  cam.push({k:'adminCosmetics',lbl:'Offered cosmetics'});
-  cam.push({k:'adminNextBook',lbl:'Offered next booking'});
-  cam.push({k:'adminSamples',lbl:'Offered samples (if cosmetics declined)'});
-  sections.push({title:'Camera — Admin',items:cam});
-  // Barber
-  if(hc!=='none'){
-    sections.push({title:'Barber — Hygiene',items:[{k:'barberGloves',lbl:'Black gloves on'},{k:'barberMask',lbl:'Mask on'}]});
-    const proc=[];
-    if(hc==='premium'){
-      proc.push({k:'hairWash1',lbl:'1st hair wash'});proc.push({k:'barberShampooDemo',lbl:'Shampoo demo on 1st wash'});
-      if(isNew)proc.push({k:'barberDiscussion',lbl:'Haircut discussion + references'});
-      proc.push({k:'cleanerFloor',lbl:'Cleaner swept around chair'});proc.push({k:'hairWash2',lbl:'2nd hair wash'});
-      proc.push({k:'barberStyleDemo',lbl:'Styling product demo'});proc.push({k:'barberAfterShave',lbl:'Auto-shave after cut'});
-      proc.push({k:'barberToolClean',lbl:'Tools in barbicide/sanitizer'});proc.push({k:'cleanerWash',lbl:'Cleaner disinfected sink'});
-      sections.push({title:'Barber — Premium Haircut',items:proc});
-    }else if(hc==='royal'){
-      proc.push({k:'royalTricho',lbl:'Trichoscope — showed hair condition (before wash)'});
-      proc.push({k:'hairWash1',lbl:'1st hair wash'});proc.push({k:'barberShampooDemo',lbl:'Shampoo demo on 1st wash'});
-      proc.push({k:'royalScrub',lbl:'Head scrub (1st wash)'});proc.push({k:'royalMassager',lbl:'Head massagers (1 min)'});
-      if(isNew)proc.push({k:'barberDiscussion',lbl:'Haircut discussion + references'});
-      proc.push({k:'cleanerFloor',lbl:'Cleaner swept around chair'});proc.push({k:'hairWash2',lbl:'2nd hair wash'});
-      proc.push({k:'barberShampooDemo2',lbl:'Shampoo demo on 2nd wash'});proc.push({k:'royalShampoo2',lbl:'Anti-hairloss shampoo (2nd wash)'});
-      proc.push({k:'royalMassager2',lbl:'Massagers on 2nd wash'});proc.push({k:'royalTonic',lbl:'Anti-hairloss tonic + vibro-massager'});
-      proc.push({k:'barberStyleDemo',lbl:'Styling product demo'});proc.push({k:'barberAfterShave',lbl:'Auto-shave after cut'});
-      proc.push({k:'barberToolClean',lbl:'Tools in barbicide/sanitizer'});proc.push({k:'cleanerWash',lbl:'Cleaner disinfected sink'});
-      sections.push({title:'Barber — Royal Haircut',items:proc});
-    }
-  }
-  if(bd!=='none'){
-    const bi=[];
-    if(bd==='premium'){
-      bi.push({k:'beardWash',lbl:'Beard wash (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Lavender oil on hot towel'});
-      bi.push({k:'beardHotTowel',lbl:'Hot towel (2 min)'});bi.push({k:'beardSpongies',lbl:'Eye sponges'});
-      bi.push({k:'beardPreshave',lbl:'Menthol pre-shave'});bi.push({k:'beardMenthol',lbl:'Menthol oil on cold towel'});
-      bi.push({k:'beardColdTowel',lbl:'Cold towel (2 min)'});bi.push({k:'beardAfter',lbl:'Aftershave applied'});bi.push({k:'beardBalm',lbl:'Beard balm'});
-      sections.push({title:'Beard — Premium',items:bi});
-    }else if(bd==='royal'){
-      bi.push({k:'beardWash',lbl:'Beard wash (Luxina Beard)'});bi.push({k:'beardLavender',lbl:'Lavender oil on hot towel'});
-      bi.push({k:'beardHotTowel',lbl:'Hot towel (2 min)'});bi.push({k:'royalVibro1',lbl:'Vibro-massagers (hot stage)'});
-      bi.push({k:'beardSpongies',lbl:'Eye sponges'});bi.push({k:'beardPreshave',lbl:'Menthol pre-shave'});
-      bi.push({k:'royalPatches',lbl:'Under-eye patches'});bi.push({k:'beardMenthol',lbl:'Menthol oil on cold towel'});
-      bi.push({k:'beardColdTowel',lbl:'Cold towel (2 min)'});bi.push({k:'royalVibro2',lbl:'Vibro-massagers (cold stage)'});
-      bi.push({k:'detoxNeroli',lbl:'Neroli detox oil'});bi.push({k:'detoxAmber',lbl:'Amber shampoo (foam)'});
-      bi.push({k:'detoxLilly',lbl:'Lilly cream-balm'});bi.push({k:'beardAfter',lbl:'Aftershave applied'});
-      sections.push({title:'Beard — Royal Shave',items:bi});
-    }
-  }
   area.innerHTML=sections.map(s=>{
     const done=s.items.filter(i=>ck[i.k]===true).length,tot=s.items.length;
     const p=tot?done/tot:0,sc=p>=1?'green':p>=0.6?'yellow':'red';
