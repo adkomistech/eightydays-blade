@@ -905,9 +905,10 @@ async function addStaff(){
   syncStaffArrays();renderAll();renderStaffList();
 }
 window.addStaff=addStaff;
-function removeStaff(idx){
+async function removeStaff(idx){
   const s=STATE.staff[idx];
   if(!confirm(`Remove ${s.name} (${s.role}) from roster?\n\nHistorical data will be kept.`))return;
+  await supabase.from('staff').delete().eq('id', s.id);
   STATE.staff.splice(idx,1);
   syncStaffArrays();renderAll();renderStaffList();
 }
